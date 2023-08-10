@@ -1,0 +1,755 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="java多线程前言通过一个个问题，逐渐窥探多线程的一个个部分 线程，线程的理解在计算机系统中，各种资源（如内存、CPU时间、文件句柄等）是有限且宝贵的，不同的程序需要共享和竞争这些资源。为了有效地管理这些资源的分配和调度，操作系统引入了进程的概念。 当一个程序被启动时，操作系统会为其创建一个独立的进程，并给予其一定的资源。每个进程都有自己的内存空间、程序代码、数据和执行状态，以及所需的其他系统资源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过问题来理解多线程">
+<meta property="og:url" content="http://example.com/2023/08/10/%E9%80%9A%E8%BF%87%E9%97%AE%E9%A2%98%E6%9D%A5%E7%90%86%E8%A7%A3%E5%A4%9A%E7%BA%BF%E7%A8%8B%20(2)/index.html">
+<meta property="og:site_name" content="砧板的博客">
+<meta property="og:description" content="java多线程前言通过一个个问题，逐渐窥探多线程的一个个部分 线程，线程的理解在计算机系统中，各种资源（如内存、CPU时间、文件句柄等）是有限且宝贵的，不同的程序需要共享和竞争这些资源。为了有效地管理这些资源的分配和调度，操作系统引入了进程的概念。 当一个程序被启动时，操作系统会为其创建一个独立的进程，并给予其一定的资源。每个进程都有自己的内存空间、程序代码、数据和执行状态，以及所需的其他系统资源">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-10T02:31:54.595Z">
+<meta property="article:modified_time" content="2023-08-10T02:34:11.487Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>通过问题来理解多线程 - 砧板的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="通过问题来理解多线程"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-10 10:31" pubdate>
+          August 10, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          74 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">通过问题来理解多线程</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="java多线程"><a href="#java多线程" class="headerlink" title="java多线程"></a>java多线程</h3><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>通过一个个问题，逐渐窥探多线程的一个个部分</p>
+<h4 id="线程，线程的理解"><a href="#线程，线程的理解" class="headerlink" title="线程，线程的理解"></a>线程，线程的理解</h4><p>在计算机系统中，各种资源（如内存、CPU时间、文件句柄等）是有限且宝贵的，不同的程序需要共享和竞争这些资源。为了有效地管理这些资源的分配和调度，操作系统引入了进程的概念。</p>
+<p>当一个程序被启动时，操作系统会为其创建一个独立的进程，并给予其一定的资源。每个进程都有自己的内存空间、程序代码、数据和执行状态，以及所需的其他系统资源。这样，不同的程序可以在独立的环境中运行，彼此之间互不干扰。</p>
+<p>通过创建进程，操作系统可以对程序进行管理和控制，包括分配内存空间、分配CPU时间片、调度线程执行、处理输入输出等。操作系统根据调度算法和策略来协调进程之间的执行，以实现多任务并发执行的效果。</p>
+<p>在一个进程内部，可以包含多个线程。每个线程代表了一个独立的执行序列，它具有自己的程序计数器、栈和寄存器等执行上下文。多个线程可以在同一个进程内并发执行，共享该进程的资源。</p>
+<p>当操作系统调度程序将CPU时间片分配给某个进程时，该进程内的多个线程会竞争获取CPU资源。操作系统通过轮转调度算法或其他调度策略，将CPU的执行时间分配给各个线程，以实现多线程的并发执行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> org.example;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadT</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br><br>        <span class="hljs-type">likeLamda</span> <span class="hljs-variable">like3</span> <span class="hljs-operator">=</span> a-&gt;&#123;<br>            System.out.println(<span class="hljs-string">&quot;你好λ&quot;</span> + a);<br>        &#125;;<br><br>        like3.like(<span class="hljs-number">10</span>);<br><br><br><br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadA</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Thread</span> &#123;<br>    <span class="hljs-type">int</span> num;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span> ; i &lt; <span class="hljs-number">1000</span> ; i++)&#123;<br>            System.out.println(num++);<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadB</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Runnable</span>&#123;<br>    <span class="hljs-type">int</span> num ;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span> ; i &lt; <span class="hljs-number">1000</span> ; i++)&#123;<br>            System.out.println(num++);<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadC</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Runnable</span>&#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">ticket</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)&#123;<br>            <span class="hljs-keyword">if</span>(ticket &lt;= <span class="hljs-number">0</span>)&#123;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br>            <span class="hljs-keyword">try</span> &#123;<br>                Thread.sleep(<span class="hljs-number">200</span>);<br>            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);<br>            &#125;<br>            System.out.println(Thread.currentThread().getName()+<span class="hljs-string">&quot;----&gt;拿到第&quot;</span> + ticket-- + <span class="hljs-string">&quot;--票&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">likeLamda</span>&#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">like</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span>;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">IlikeLamda</span> <span class="hljs-keyword">implements</span>  <span class="hljs-title class_">likeLamda</span>&#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">like</span><span class="hljs-params">(<span class="hljs-type">int</span> a)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;I like lamda&quot;</span> + a);<br>    &#125;<br>&#125;<br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h4 id="为什么要多线程"><a href="#为什么要多线程" class="headerlink" title="为什么要多线程"></a>为什么要多线程</h4><p>应为在追赶摩尔定律也就是2年翻一倍的运算速度碰壁了。遂出现了多核。但是多核是cpu多核，不是内存多核，而且多核是为了共同 处理一个目标，会出现多核处理一个缓存信息，造成线程安全问题。</p>
+<h4 id="多线程在发生什么的时候，会导致用户态和内核态”两个态之间来回切换"><a href="#多线程在发生什么的时候，会导致用户态和内核态”两个态之间来回切换" class="headerlink" title="多线程在发生什么的时候，会导致用户态和内核态”两个态之间来回切换"></a>多线程在发生什么的时候，会导致用户态和内核态”两个态之间来回切换</h4><p>在多线程编程中，当多个线程同时运行时，它们在用户态和内核态之间来回切换。这种切换是由操作系统内核负责管理的。下面是一些导致用户态和内核态之间切换的常见情况：</p>
+<ol>
+<li>线程阻塞：当一个线程执行一个阻塞操作（例如等待输入&#x2F;输出完成或等待锁释放）时，该线程将进入内核态并被放入睡眠状态。在等待的过程中，其他可运行的线程可以继续执行。当阻塞操作完成后，线程将被唤醒并返回用户态。</li>
+<li>时间片用完：操作系统以时间片为单位分配CPU资源给不同的线程。当一个线程的时间片用完时，操作系统会中断该线程的执行，并将控制权切换到另一个可运行的线程。这个切换过程涉及从用户态切换到内核态，然后再切换回用户态。</li>
+<li>系统调用：当一个线程需要进行一些只能由内核完成的操作时，例如创建新线程、分配内存或打开文件等，它必须通过系统调用来请求操作系统的帮助。在执行系统调用时，线程将从用户态切换到内核态，操作系统会处理相应的请求，并返回结果给用户态。</li>
+</ol>
+<p>总之，多线程在发生线程阻塞、时间片用完或进行系统调用等情况时，会导致用户态和内核态之间的切换。这种切换是为了合理地利用CPU资源，以提供更高效的并发执行能力。</p>
+<h4 id="用户态和内核态的区别"><a href="#用户态和内核态的区别" class="headerlink" title="用户态和内核态的区别"></a>用户态和内核态的区别</h4><p>用户态（User Mode）和内核态（Kernel Mode）是计算机处理器运行时的两种不同的执行模式。</p>
+<ol>
+<li>用户态（User Mode）：<ul>
+<li>在用户态下，应用程序在一个受限的环境中运行，无法直接访问或执行特权指令和硬件资源。</li>
+<li>应用程序只能执行非特权指令，使用分配给它们的有限资源进行操作，如内存、文件和网络等。</li>
+<li>用户态下的应用程序运行速度较快，但对系统的控制力较弱。</li>
+</ul>
+</li>
+<li>内核态（Kernel Mode）：<ul>
+<li>内核态是操作系统的特权执行环境，操作系统内核运行在该模式下，并具有对系统所有资源的完全访问权限。</li>
+<li>内核态可以执行特权指令，如操作硬件设备、修改核心数据结构等。</li>
+<li>内核态下的代码运行速度较慢，但对系统资源和控制权拥有绝对控制力。</li>
+</ul>
+</li>
+</ol>
+<p>切换状态：</p>
+<ul>
+<li>在正常情况下，应用程序运行在用户态，当需要执行特权操作时，如访问硬件设备或执行敏感的操作，应用程序必须通过系统调用方式切换到内核态。这时，CPU会将控制权从用户态切换到内核态，并执行相应的内核代码来完成特权操作。</li>
+<li>内核态执行完后，将结果返回给用户态，并将控制权切换回用户态，应用程序继续执行。</li>
+</ul>
+<h4 id="线程池可以减少用户态和内核态的切换吗？为什么"><a href="#线程池可以减少用户态和内核态的切换吗？为什么" class="headerlink" title="线程池可以减少用户态和内核态的切换吗？为什么"></a>线程池可以减少用户态和内核态的切换吗？为什么</h4><p>是的，线程池可以减少用户态和内核态之间的切换次数。</p>
+<p>在传统的多线程编程模型中，每当需要执行一个任务时，都会创建一个新的线程。这就意味着在任务执行完成后，该线程往往会被销毁，而线程的创建和销毁涉及到用户态和内核态之间的切换。频繁的线程创建和销毁会增加切换的开销，降低系统的性能。</p>
+<p>而使用线程池则可以避免这种频繁的线程创建和销毁。线程池在应用程序启动时创建一定数量的线程，并将它们置于待命状态，等待任务的到来。当有任务需要执行时，线程池中的一个空闲线程会被分配给该任务进行处理，无需额外的线程创建和销毁操作。</p>
+<p>通过线程池，可以实现以下几点减少用户态和内核态切换的优势：</p>
+<ol>
+<li>线程复用：线程池中的线程可以被多个任务重复使用，避免了频繁地创建和销毁线程，减少了切换的开销。</li>
+<li>任务队列：线程池使用任务队列来存储待执行的任务。当一个线程完成当前任务后，可以立即从任务队列中获取下一个任务，从而减少了线程切换的次数。</li>
+<li>线程数量控制：线程池可以根据系统负载情况和资源限制来动态地管理线程数量。通过合理配置线程池的大小，可以控制线程数目在一个适当的范围内，避免过多的线程切换。</li>
+</ol>
+<h4 id="什么是锁"><a href="#什么是锁" class="headerlink" title="什么是锁"></a>什么是锁</h4><p>锁是所有java对象都有的东西，里面纪录了占有这个锁的线程的线程信息。</p>
+<p>java对象的对象头内，存储了java锁的类型，无锁，偏向，轻量，重量锁。</p>
+<h4 id="锁的底层"><a href="#锁的底层" class="headerlink" title="锁的底层"></a>锁的底层</h4><p>锁，说到底还是使用了synchorized实现，synchorized被编译后回变成monitorenter和monitorexit这两个指令来使线程同步。这两个指令通过对类的monitor操作来实现同步。montior也叫锁，管程。每个类都有一个对应的锁。</p>
+<p>synchorized有性能问题，它依赖了操作系统的mutexlook来实现的同步，会涉及到上文切换，内核态用户态转换。非常重量级，有的时候，切换的操作比线程执行还要耗时</p>
+<p>但是从java6开始优化了synchorized，使用了锁进化机制。偏向锁状态下，在对象头内会存放线程id，如果出现线程的竞争，则进化为轻量级锁？？？？？？？？？？？？？</p>
+<h4 id="synchronized底层和monitorenter、monitorexit指令的关系"><a href="#synchronized底层和monitorenter、monitorexit指令的关系" class="headerlink" title="synchronized底层和monitorenter、monitorexit指令的关系"></a>synchronized底层和monitorenter、monitorexit指令的关系</h4><p>在Java中，关键字<code>synchronized</code>用于实现线程之间的同步，确保多个线程对共享资源的安全访问。底层实现中，<code>synchronized</code>关键字与<code>monitorenter</code>和<code>monitorexit</code>指令密切相关。</p>
+<p><code>monitorenter</code>和<code>monitorexit</code>是Java虚拟机（JVM）提供的同步指令，用于对监视器（Monitor）的获取和释放。</p>
+<p>当Java代码中使用<code>synchronized</code>关键字修饰一个方法或代码块时，编译器会在生成的字节码中插入<code>monitorenter</code>和<code>monitorexit</code>指令。这两个指令将会在进入和离开<code>synchronized</code>代码块时被执行。</p>
+<p>具体地，<code>monitorenter</code>指令用于获取对象的监视器（锁），它会尝试获得锁并标记当前线程作为锁的持有者。如果锁已经被其他线程持有，则当前线程将会阻塞等待直到锁可用。</p>
+<p><code>monitorexit</code>指令用于释放对象的监视器（锁），将锁的持有者标记清除，并尝试唤醒等待该锁的其他线程。</p>
+<p>通过<code>monitorenter</code>和<code>monitorexit</code>指令的配合，JVM实现了<code>synchronized</code>关键字的语义，确保对被<code>synchronized</code>修饰的代码块或方法的互斥访问。</p>
+<p>需要注意的是，<code>synchronized</code>关键字不仅用于同步代码块和方法，还可以用于修饰非静态方法和静态方法、实例对象和类对象等。在不同的场景下，编译器会生成不同的字节码指令来支持<code>synchronized</code>的语义，但核心思想是使用<code>monitorenter</code>和<code>monitorexit</code>指令进行监视器的获取和释放。</p>
+<h4 id="上面的描述中，监视器是每个java对象都拥有的对吗？"><a href="#上面的描述中，监视器是每个java对象都拥有的对吗？" class="headerlink" title="上面的描述中，监视器是每个java对象都拥有的对吗？"></a>上面的描述中，监视器是每个java对象都拥有的对吗？</h4><p>是的，每个Java对象都拥有一个与之相关联的监视器（Monitor），也可以称为锁。监视器是实现Java中<code>synchronized</code>关键字的机制之一。</p>
+<p>每个Java对象都有一个与之关联的监视器，该监视器的获取和释放用于控制对对象的同步访问。当某个线程进入<code>synchronized</code>代码块或方法时，它会尝试获取该对象的监视器（锁）。如果没有其他线程持有该锁，那么该线程会成功获取锁并继续执行；如果锁已被其他线程持有，那么该线程将被阻塞，直到获取到锁为止。</p>
+<p>监视器不是每个Java对象本身所独有的，而是与对象关联的一种同步机制。它的用途是保证对共享资源的安全访问和操作。当一个线程获得某个对象的监视器后，其他线程无法同时获得该对象的监视器，从而实现了对该对象的互斥访问。</p>
+<p>需要注意的是，每个Java对象只有一个与之关联的监视器。如果在代码中使用<code>synchronized</code>关键字修饰不同的对象，则它们会拥有各自独立的监视器，互相之间不会产生影响。</p>
+<p>总结来说，每个Java对象都拥有一个与之关联的监视器（锁），用于实现对该对象的同步访问和操作，确保多线程之间的互斥性。</p>
+<h4 id="java多线程中monitor就是锁，若一个线程占用锁，是否意味着该锁内存储着锁被那个线程占用的信息"><a href="#java多线程中monitor就是锁，若一个线程占用锁，是否意味着该锁内存储着锁被那个线程占用的信息" class="headerlink" title="java多线程中monitor就是锁，若一个线程占用锁，是否意味着该锁内存储着锁被那个线程占用的信息"></a>java多线程中monitor就是锁，若一个线程占用锁，是否意味着该锁内存储着锁被那个线程占用的信息</h4><p>是的，当一个线程占用了锁时，该锁内部会存储着关于锁被哪个线程占用的信息。这个信息包括了持有锁的线程的标识，并且可以通过监视器来进行获取。</p>
+<p>在Java中，每个对象都有一个与之关联的监视器（锁）。当一个线程成功获取了一个对象的监视器（即获取到了该对象的锁），该线程会成为锁的持有者。持有锁的线程的标识会被存储在锁的内部，以便其他线程可以查询该信息。</p>
+<p>其他线程在尝试获取同一个对象的监视器（即尝试获取该对象的锁）时，会先检查锁的状态。如果锁已经被其他线程占用，则等待锁释放；如果锁未被占用，则尝试获取锁并将自己标记为锁的持有者。</p>
+<p>锁的内部存储了关于锁被哪个线程占用的信息，这种机制使得Java多线程能够实现同步和互斥访问。这样做的好处是，它允许每个线程在获取到锁之前等待，从而实现线程之间的协调和资源的正确共享。</p>
+<p>需要注意的是，当一个线程释放了锁，也就是锁的持有者变为空闲时，锁的内存中的持有者信息会被清除，以便其他线程能够获取该锁。</p>
+<h4 id="对像头内有什么？"><a href="#对像头内有什么？" class="headerlink" title="对像头内有什么？"></a>对像头内有什么？</h4><ol>
+<li>标记字（Mark Word）：用于表示对象的状态和标记信息。它可以包含锁的信息、哈希码、GC相关的标记等。</li>
+<li>类型指针（Class Pointer）：指向对象所属的类的元数据，用于确定对象的类型和访问类的方法。</li>
+<li>数组长度（Array Length）：对于数组对象，会包含数组的长度信息。</li>
+<li>对齐补充（Alignment Padding）：内存对齐的需要，填充字节来保证对象的起始地址符合对齐要求。</li>
+</ol>
+<p>这些信息通常存储在对象的头部，而对象的实际数据则存储在对象的实例变量区域。具体的对象布局和内存分配方式在不同的JVM实现中可能存在差异，但以上提到的是一些常见的信息。</p>
+<h4 id="相较于线程被挂起，线程自旋有什么优缺点"><a href="#相较于线程被挂起，线程自旋有什么优缺点" class="headerlink" title="相较于线程被挂起，线程自旋有什么优缺点"></a>相较于线程被挂起，线程自旋有什么优缺点</h4><p>线程自旋和线程挂起是两种不同的并发控制机制，它们各有优缺点。</p>
+<p>线程自旋是指当一个线程在访问共享资源时，如果发现该资源正在被其他线程占用，它会持续地循环检查该资源是否可用，而不是立刻被挂起。线程自旋的优点包括：</p>
+<ol>
+<li>响应速度高：线程自旋无需进行上下文切换和线程挂起的操作，减少了线程切换带来的开销，因此响应速度更快。</li>
+<li>避免线程切换：线程自旋避免了线程从用户态到内核态的切换过程，减少了系统调用的开销，尤其是在短时间内需要频繁访问资源的场景下。</li>
+</ol>
+<p>然而，线程自旋也存在一些缺点：</p>
+<ol>
+<li>占用CPU资源：线程自旋会占用CPU资源，如果自旋时间过长或没有其他线程释放资源，会导致CPU资源浪费，降低系统的整体性能。</li>
+<li>长时间自旋造成延迟：如果某个线程一直在自旋，而其他线程一直占用着该资源，会导致自旋线程长时间得不到执行，造成延迟。</li>
+</ol>
+<p>相比之下，线程挂起是指当一个线程发现某个资源被占用时，它会被操作系统挂起（即阻塞），直到资源可用再恢复执行。线程挂起的优点包括：</p>
+<ol>
+<li>节省CPU资源：线程挂起不会占用CPU资源，可以避免自旋时的长时间空转浪费CPU。</li>
+<li>释放CPU给其他线程：线程挂起释放了CPU资源，让其他线程有机会执行，提高了系统的并发能力。</li>
+</ol>
+<p>然而，线程挂起也存在一些缺点：</p>
+<ol>
+<li><p>上下文切换开销：线程挂起需要进行上下文切换，从用户态切换到内核态，涉及到保存和恢复上下文的开销。</p>
+</li>
+<li><p>较慢的恢复时间：当线程挂起后，等待资源可用时需要重新唤醒线程，这个过程通常比较耗时。</p>
+</li>
+</ol>
+<h4 id="线程挂起了，线程就进入阻塞状态了对吗"><a href="#线程挂起了，线程就进入阻塞状态了对吗" class="headerlink" title="线程挂起了，线程就进入阻塞状态了对吗"></a>线程挂起了，线程就进入阻塞状态了对吗</h4><p>对</p>
+<h4 id="yeild方法或者join方法，会让线程阻塞吗？"><a href="#yeild方法或者join方法，会让线程阻塞吗？" class="headerlink" title="yeild方法或者join方法，会让线程阻塞吗？"></a>yeild方法或者join方法，会让线程阻塞吗？</h4><p><code>yield()</code>方法和<code>join()</code>方法都可以导致线程阻塞，但具体的阻塞行为和作用不完全一样。</p>
+<ul>
+<li><code>yield()</code>方法：<code>yield()</code>方法是一个静态方法，用于提示调度器当前线程愿意放弃CPU资源，将执行的机会让给其他线程。调用<code>yield()</code>方法会使当前线程从运行状态转变为就绪状态，然后由调度器再次决定是否将CPU资源分配给该线程。虽然线程在调用<code>yield()</code>后会放弃CPU的执行权，但并不表示一定会被阻塞，因为线程可能很快就再次获取到CPU时间片继续执行。</li>
+<li><code>join()</code>方法：<code>join()</code>方法是一个实例方法，用于在当前线程中等待另一个线程的完成。调用<code>join()</code>方法会使当前线程进入阻塞状态，直到目标线程执行完毕才恢复执行。在主线程中调用某个子线程的<code>join()</code>方法，主线程会被阻塞直到子线程执行完毕或等待超时。这个方法常用于多个线程间的协同操作。</li>
+</ul>
+<p>总结起来，<code>yield()</code>方法是主动放弃CPU资源的方式，当前线程会进入就绪状态而不是阻塞状态，不会被长时间阻塞。而<code>join()</code>方法是通过等待目标线程执行完毕来实现阻塞，在等待期间当前线程将被阻塞，直到目标线程完成。</p>
+<h4 id="yield会放弃资源吗？，join呢？"><a href="#yield会放弃资源吗？，join呢？" class="headerlink" title="yield会放弃资源吗？，join呢？"></a>yield会放弃资源吗？，join呢？</h4><p>对于<code>yield()</code>方法和<code>join()</code>方法，它们的作用是不同的，不涉及资源的放弃。</p>
+<ul>
+<li><code>yield()</code>方法：<code>yield()</code>方法是一个静态方法，调用它会提示调度器当前线程愿意放弃CPU资源，将执行的机会让给其他具备相同或更高优先级的线程。当线程调用<code>yield()</code>方法后，只是暂时放弃当前的执行权，让其他线程有机会执行，但并不会主动放弃任何资源。</li>
+<li><code>join()</code>方法：<code>join()</code>方法是一个实例方法，用于在当前线程中等待另一个线程的完成。调用<code>join()</code>方法会使当前线程进入阻塞状态，并等待目标线程执行完毕。调用线程调用<code>join()</code>方法后，将等待目标线程终止，期间不会占用太多资源。线程之间通过<code>join()</code>方法的协作是通过等待和通知机制实现的，而不是通过主动放弃资源。</li>
+</ul>
+<p>所以，<code>yield()</code>方法和<code>join()</code>方法并不会主动放弃或释放资源，它们更关注于线程的调度和协作。<code>yield()</code>方法只是暂时放弃当前的执行权，给其他线程一些机会，而<code>join()</code>方法是等待目标线程执行完毕。线程对于资源的获取和释放，在其他地方进行处理，例如锁的获取和释放、资源的关闭等。</p>
+<h4 id="假设A线程在运行，B线程自旋，等待A释放一个锁，那么，为什么B可以自旋？它明明没获得cpu的执行"><a href="#假设A线程在运行，B线程自旋，等待A释放一个锁，那么，为什么B可以自旋？它明明没获得cpu的执行" class="headerlink" title="假设A线程在运行，B线程自旋，等待A释放一个锁，那么，为什么B可以自旋？它明明没获得cpu的执行"></a>假设A线程在运行，B线程自旋，等待A释放一个锁，那么，为什么B可以自旋？它明明没获得cpu的执行</h4><p>（其实获得了，因为线程B是线程B，A是A，都在运行）</p>
+<h4 id="cas是什么？"><a href="#cas是什么？" class="headerlink" title="cas是什么？"></a>cas是什么？</h4><p>CAS（Compare and Swap）是一种并发算法，用于实现多线程环境下的原子操作。它是乐观锁的一种常见实现方式。</p>
+<p>CAS操作包含三个参数：内存地址（或者称为变量的指针）、期望值和更新值。它的原理是先比较内存地址上的值是否与期望值相等，如果相等，则将内存地址上的值更新为新的值；如果不相等，则表示其他线程并发修改了该值，更新失败。</p>
+<p>CAS操作通常使用原子指令来确保操作的原子性，例如CPU提供的CMPXCHG指令。这些指令能够在一个原子步骤中执行比较和更新操作，避免了并发条件下的竞态条件。</p>
+<p>CAS的优点在于它不需要加锁，因此可以避免悲观锁带来的线程阻塞和上下文切换开销，同时能够保证共享资源的原子性。然而，由于CAS操作需要进行多次尝试，当并发冲突频繁发生时，可能会导致自旋的开销增加，并且并发冲突较多时会导致性能下降。</p>
+<p>CAS在并发编程中广泛应用于无锁数据结构、原子变量、线程安全算法等方面，如AtomicInteger、AtomicLong等原子类就是基于CAS实现的。它为并发编程提供了一种高效且线程安全的方式来处理共享资源的访问和更新。</p>
+<h4 id="cas的aba问题和解决方案"><a href="#cas的aba问题和解决方案" class="headerlink" title="cas的aba问题和解决方案"></a>cas的aba问题和解决方案</h4><p>CAS的ABA问题是指在多线程环境中，在执行CAS操作时，由于共享数据发生了两次变化（从A到B再回到A），导致比较操作仍然返回成功，但实际上共享数据已经发生了变化。</p>
+<p>ABA问题可能会对一些需要关注数据历史变化的情况产生影响，例如使用CAS来实现无锁数据结构、并发栈等。</p>
+<p>下面是一些常见的解决方案：</p>
+<ol>
+<li>增加版本号或者时间戳：在执行CAS时，除了比较值之外，还可以增加一个版本号或者时间戳，每次更新时都会使版本号增加。这样，即使共享数据的值经过多次变化，通过版本号或时间戳的比较，可以区分出是否发生了ABA问题。</li>
+<li>使用带有标记的数据结构：可以使用带有标记的数据结构，例如带有ABA标记的节点。当进行CAS操作时，除了比较值之外，还需要检查标记是否匹配。如果标记不匹配，则表示发生了ABA问题。</li>
+<li>引入引用计数：为变量引入引用计数的概念，每次修改变量时，引用计数加1。这样，在进行CAS操作时，除了比较值之外，还要比较引用计数。如果引用计数不匹配，则表示发生了ABA问题。</li>
+<li>使用双重CAS操作：可以使用两次CAS操作，第一次CAS比较值的同时获取当前的版本号或时间戳，第二次CAS比较值的同时比较之前获取到的版本号或时间戳。这样，即使共享数据的值经过多次变化，通过两次CAS操作的结果，可以避免ABA问题。</li>
+</ol>
+<p>需要根据具体情况选择适合的解决方案，以确保在CAS操作中能够正确处理ABA问题。</p>
+<h4 id="当我使用原子类的int进行cas操作，然后自旋次数超过默认会发生什么？"><a href="#当我使用原子类的int进行cas操作，然后自旋次数超过默认会发生什么？" class="headerlink" title="当我使用原子类的int进行cas操作，然后自旋次数超过默认会发生什么？"></a>当我使用原子类的int进行cas操作，然后自旋次数超过默认会发生什么？</h4><p>当使用原子类的<code>int</code>类型进行CAS（Compare and Swap）操作，并且自旋次数超过默认值时，将会发生以下情况：</p>
+<ol>
+<li><p>自旋等待：如果自旋次数还未达到默认值，线程将会继续自旋等待，尝试执行CAS操作直到成功。</p>
+</li>
+<li><p>自旋次数超过默认值：当自旋次数超过默认值，可能会发生两种情况：</p>
+<p>a. 当前线程会继续自旋等待，直到其他线程释放锁或资源并使得CAS操作成功，或者直到线程调度器主动切换到其他线程执行。</p>
+<p>b. 在某些编程语言或框架中，针对自旋次数超过默认值的情况，可能会触发特定策略来避免资源的过度消耗或线程的饥饿情况。比如，可以选择将当前线程转为阻塞状态，并进入等待队列，让其他线程有机会执行。等待队列中的线程会在资源释放后按照一定的调度策略被唤醒，并再次尝试执行CAS操作。</p>
+</li>
+</ol>
+<p>总之，自旋次数超过默认值后的具体行为取决于编程语言、框架或操作系统的实现。一般而言，会继续等待或通过其他机制来避免资源的浪费和线程的长时间占用。建议在实际应用中根据具体场景和性能需求合理设置自旋次数，以平衡并发性能和系统资源消耗。</p>
+<h4 id="如果线程池内线程被挂起了，那么它之后会被如何？"><a href="#如果线程池内线程被挂起了，那么它之后会被如何？" class="headerlink" title="如果线程池内线程被挂起了，那么它之后会被如何？"></a>如果线程池内线程被挂起了，那么它之后会被如何？</h4><h4 id="AQs"><a href="#AQs" class="headerlink" title="AQs"></a>AQs</h4><p>太难了，能说多少说多少了属于是</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>通过问题来理解多线程</div>
+      <div>http://example.com/2023/08/10/通过问题来理解多线程 (2)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 10, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/10/%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%9D%E8%80%83%20(2)/" title="算法的思考">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">算法的思考</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/10/%E5%B7%A5%E4%BD%9C%E7%BB%8F%E9%AA%8C%20(2)/" title="工作经验">
+                        <span class="hidden-mobile">工作经验</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

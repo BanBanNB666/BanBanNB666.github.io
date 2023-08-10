@@ -16,21 +16,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+    <meta name="description" content="有一天我突然有疑惑，我使用spring的时候，分明是普通编程，为什么它不会产生并发安全问题呢 我们知道在一般情况下，只有无状态的Bean才可以在多线程环境下共享，在Spring中，绝大部分Bean都可以声明为singleton作用域。那么对于有状态的bean呢？Spring对一些（如RequestContextHolder、TransactionSynchronizationManager、Lo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2023/07/05/hello-world/index.html">
+<meta property="og:title" content="spring的并发问题">
+<meta property="og:url" content="http://example.com/2023/08/10/spring%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="砧板的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="有一天我突然有疑惑，我使用spring的时候，分明是普通编程，为什么它不会产生并发安全问题呢 我们知道在一般情况下，只有无状态的Bean才可以在多线程环境下共享，在Spring中，绝大部分Bean都可以声明为singleton作用域。那么对于有状态的bean呢？Spring对一些（如RequestContextHolder、TransactionSynchronizationManager、Lo">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-07-05T13:23:16.854Z">
-<meta property="article:modified_time" content="2023-08-10T02:28:28.167Z">
+<meta property="article:published_time" content="2023-08-10T02:42:00.348Z">
+<meta property="article:modified_time" content="2023-08-10T02:44:09.776Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Hello World - 砧板的博客</title>
+  <title>spring的并发问题 - 砧板的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +196,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Hello World"></span>
+            <span id="subtitle" data-typed-text="spring的并发问题"></span>
           
         </div>
 
@@ -207,8 +207,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-07-05 21:23" pubdate>
-          July 5, 2023 pm
+        <time datetime="2023-08-10 10:42" pubdate>
+          August 10, 2023 am
         </time>
       </span>
     
@@ -219,7 +219,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          377 words
+          4.5k words
         
       </span>
     
@@ -230,7 +230,7 @@
         
         
         
-          4 mins
+          38 mins
         
       </span>
     
@@ -267,25 +267,43 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Hello World</h1>
+            <h1 id="seo-header">spring的并发问题</h1>
             
             
               <div class="markdown-body">
                 
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
+                <p> 有一天我突然有疑惑，我使用spring的时候，分明是普通编程，为什么它不会产生并发安全问题呢</p>
+<p>我们知道在一般情况下，只有无状态的Bean才可以在多线程环境下共享，在Spring中，绝大部分Bean都可以声明为singleton作用域。<br>那么对于有状态的bean呢？Spring对一些（如RequestContextHolder、TransactionSynchronizationManager、LocaleContextHolder等）中非线程安全状态的bean采用ThreadLocal进行处理，让它们也成为线程安全的状态，因此有状态的Bean就可以在多线程中共享了。</p>
+<p><strong>如果用有状态的bean，也可以使用用prototype模式，每次在注入的时候就重新创建一个bean，在多线程中互不影响。</strong></p>
+<p>有状态就是有数据存储功能。有状态对象(Stateful Bean)，就是有实例变量的对象 ，可以保存数据，是非线程安全的。在不同方法调用间不保留任何状态。</p>
+<p>无状态就是一次操作，不能保存数据。无状态对象(Stateless Bean)，就是没有实例变量的对象  .不能保存数据，是不变类，是线程安全的。</p>
+<p>无状态的Bean适合用不变模式，技术就是单例模式，这样可以共享实例，提高性能。</p>
+<p>有状态的Bean，多线程环境下不安全，那么适合用Prototype原型模式。Prototype: 每次对bean的请求都会创建一个新的bean实例。</p>
+<p>Servlet体系结构是建立在Java多线程机制之上的，它的生命周期是由Web 容器负责的。一个Servlet类在Application中只有一个实例存在，也就是有多个线程在使用这个实例。这是单例模式的应用。如Service层、Dao层用默认singleton就行，虽然Service类也有dao这样的属性，但dao这些类都是没有状态信息的，也就是相当于不变(immutable)类，所以不影响。Struts2中的Action因为会有User、BizEntity这样的实例对象，是有状态信息的，在多线程环境下是不安全的，所以Struts2默认的实现是Prototype模式。在Spring中，Struts2的Action中，scope要配成prototype作用域。 （单例模式-单例注册表实现和threadLocal-可以处理有状态的bean之间的关系）</p>
+<p>还有我们的实体bean，从客户端传递到后台的controller–&gt;service–&gt;Dao,这一个流程中，他们这些对象都是单例的，那么这些单例的对象在处理我们的传递到后台的实体bean不会出问题吗？<br>答：[实体bean不是单例的]，并没有交给spring来管理，每次我们都手动的New出来的【如EMakeType et &#x3D; new EMakeType();】，所以即使是那些处理我们提交数据的业务处理类是被多线程共享的，但是他们处理的数据并不是共享的，数据时每一个线程都有自己的一份，所以在数据这个方面是不会出现线程同步方面的问题的。</p>
+<p><strong>（在这里补充下自己在项目开发中对于实体bean在多线程中的处理：1。对于实体bean一般通过方法参数的的形式传递（参数是局部变量），所以多线程之间不会有影响。2.有的地方对于有状态的bean直接使用prototype原型模式来进行解决。3.对于使用bean的地方可以通过new的方式来创建）</strong></p>
+<p>但是那些的在Dao中的xxxDao,或controller中的xxxService，这些对象都是单例那么就会出现线程同步的问题。但是话又说回来了，这些对象虽然会被多个进程并发访问，可我们访问的是他们里面的方法，<strong>这些类里面通常不会含有成员变量</strong>，那个Dao里面的ibatisDao是框架里面封装好的，已经被测试，不会出现线程同步问题了。所以出问题的地方就是我们自己系统里面的业务对象，<strong>所以我们一定要注意这些业务对象里面千万不能要独立成员变量</strong>，否则会出错。</p>
+<p>spring对那些个有状态bean使用ThreadLocal维护变量[仅仅是变量,因为线程同步的问题就是成员变量的互斥访问出问题]时，ThreadLocal为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。</p>
+<p><strong>对spring并发访问线程安全的两篇博客汇总，可以得出上述结论…………..</strong></p>
+<p>由于Spring MVC默认是Singleton的，所以会产生一个潜在的安全隐患。根本核心是instance<strong>的变量保持状态</strong>的问题。这意味着每个request过来，系统都会用原有的instance去处理，这样导致了两个结果（单例的好处）：</p>
+<p>一是我们不用每次创建Controller，<br>二是减少了对象创建和垃圾收集的时间；<br>由于只有一个Controller的instance，当多个线程同时调用它的时候，它里面的instance<strong>变量</strong>（可以理解为私有变量）就不是线程安全的了，会发生窜数据的问题。<br>当然大多数情况下，我们根本不需要考虑线程安全的问题，比如dao,service等，除非在bean中声明了实例变量。因此，我们在使用spring mvc 的contrller时，<strong>应避免在controller中定义实例变量（singleton唯一的不好是单例的变量容易出现问题，下面有解决的方案）</strong>。<br>如：</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs lasso">publicclassControllerextendsAbstractCommandController&#123;<br><span class="hljs-params">...</span><span class="hljs-params">...</span><br>protectedModelAndView <span class="hljs-keyword">handle</span>(HttpServletRequest request,HttpServletResponse response,<br>Object command,BindException errors)throwsException&#123;<br>company =<span class="hljs-params">...</span><span class="hljs-params">...</span><span class="hljs-params">...</span><span class="hljs-params">...</span><span class="hljs-params">...</span>.;<br>&#125;<br>protectedCompany company;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<p>Hello World</p>
+<p>在这里有声明一个变量company，这里就存在并发线程安全的问题。<br>如果控制器是使用单例形式，且controller中有一个私有的变量a,所有请求到同一个controller时，使用的a变量是共用的，即若是某个请求中修改了这个变量a，则，在别的请求中能够读到这个修改的内容。。</p>
+<p><strong>有几种解决方法：</strong><br>1、在控制器中不使用实例变量（可以使用方法参数的形式解决，参考博文<a target="_blank" rel="noopener" href="http://blog.csdn.net/cs408/article/details/47809271"> Spring Bean Scope 有状态的Bean 无状态的Bean</a>）<br>2、将控制器的作用域从单例改为原型，即在spring配置文件Controller中声明 scope&#x3D;”prototype”，每次都创建新的controller<br>3、在Controller中使用ThreadLocal变量</p>
+<p>这几种做法有好有坏，第一种，需要开发人员拥有较高的编程水平与思想意识，在编码过程中力求避免出现这种BUG，</p>
+<p>而第二种则是容器自动的对每个请求产生一个实例，由JVM进行垃圾回收，因此做到了线程安全。</p>
+<p>使用第一种方式的好处是实例对象只有一个，所有的请求都调用该实例对象，速度和性能上要优于第二种，不好的地方，就是需要程序员自己去控制实例变量的状态保持问题。第二种由于每次请求都创建一个实例，所以会消耗较多的内存空间。</p>
+<p>所以在使用spring开发web 时要注意，默认Controller、Dao、Service都是单例的。</p>
+<p>【1】SpringMVC多线程环境中如何保证对象的安全性？</p>
+<p>代码如下：</p>
+<p>@RequestMapping(“&#x2F;user”) @Controller ClassUserController { @Resource UserService userService; @RequestMapping(“&#x2F;add”) publicvoid testA(User user){ userService.add(user); } @RequestMapping(“&#x2F;get”) publicvoid testA(int id){ userService.get(id); } } @Service(“userService”) ClassUserService{ publicstaticMap&lt;Integer,User&gt; usersCache &#x3D;newHashMap&lt;String,User&gt;(); publicvoid add(User user){ usersCache.put(user.getId(),user); } publicvoidget(int id){ usersCache.get(id); } }</p>
+<p>此段代码，usersCache对象就是线程不安全的。因为它是静态的全局共享对象。如果有多个线程同时调用add方法，可能会发生用户对象被覆盖的情况，也就是id对应对象不一致，这是多线程编程中最常发生的事情。</p>
+<p>所以，可以使用 Collections 工具同步Map。</p>
+<p>static Map&lt;Integer, Users&gt; usersCache &#x3D; Collections.synchronizedMap(new HashMap&lt;Integer, Users&gt;());</p>
+<p>研究一下，Spring中的源码，它对常用的开源框架做了大量封装，如， Hibernate中的sessionFactory，就使用的是 org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean，而在 AnnotationSessionFactoryBean的父类LocalSessionFactoryBean中，定义了大量的ThreadLocal来保证多线程的安全性。 </p>
+<p>publicclassLocalSessionFactoryBeanextendsAbstractSessionFactoryBeanimplementsBeanClassLoaderAware{ privatestaticfinalThreadLocal<DataSource> configTimeDataSourceHolder &#x3D; newThreadLocal<DataSource>(); privatestaticfinalThreadLocal<TransactionManager> configTimeTransactionManagerHolder &#x3D; newThreadLocal<TransactionManager>(); privatestaticfinalThreadLocal<Object> configTimeRegionFactoryHolder &#x3D; newThreadLocal<Object>(); privatestaticfinalThreadLocal<CacheProvider> configTimeCacheProviderHolder &#x3D; newThreadLocal<CacheProvider>(); privatestaticfinalThreadLocal<LobHandler> configTimeLobHandlerHolder &#x3D; newThreadLocal<LobHandler>();</p>
+<p>}</p>
 
                 
               </div>
@@ -303,8 +321,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Hello World</div>
-      <div>http://example.com/2023/07/05/hello-world/</div>
+      <div>spring的并发问题</div>
+      <div>http://example.com/2023/08/10/spring并发问题/</div>
     </div>
     <div class="license-meta">
       
@@ -316,7 +334,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>July 5, 2023</div>
+          <div>August 10, 2023</div>
         </div>
       
       
@@ -348,15 +366,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/08/10/%E7%BC%96%E5%86%99sql%E7%9A%84%E6%80%9D%E8%80%83%20(2)/" title="编写sql的思考">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">编写sql的思考</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2023/08/10/%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%9D%E8%80%83%20(2)/" title="算法的思考">
+                        <span class="hidden-mobile">算法的思考</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

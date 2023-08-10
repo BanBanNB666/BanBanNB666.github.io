@@ -1,0 +1,792 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="练习sql过程中的感悟                                                                                                                                                                   SQL复杂联合查询编写SQL查询以查找每个部门中薪资">
+<meta property="og:type" content="article">
+<meta property="og:title" content="编写sql的思考">
+<meta property="og:url" content="http://example.com/2023/08/10/%E7%BC%96%E5%86%99sql%E7%9A%84%E6%80%9D%E8%80%83%20(2)/index.html">
+<meta property="og:site_name" content="砧板的博客">
+<meta property="og:description" content="练习sql过程中的感悟                                                                                                                                                                   SQL复杂联合查询编写SQL查询以查找每个部门中薪资">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:\Users\FLZ\AppData\Roaming\Typora\typora-user-images\image-20230514144351486.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\EE69.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\UPO.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\0S2VT.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\EQL3.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\LRP65RO0.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\53LK.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\C0N.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\J307XNE.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\U.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\VG3.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\MC.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\58S2D.png">
+<meta property="og:image" content="d:\Study\%E6%B1%82%E8%81%8C\%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0\%E5%9B%BE%E7%89%87%E6%96%87%E4%BB%B6\FEBGB.png">
+<meta property="article:published_time" content="2023-08-10T02:30:12.502Z">
+<meta property="article:modified_time" content="2023-08-10T02:40:28.979Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="c:\Users\FLZ\AppData\Roaming\Typora\typora-user-images\image-20230514144351486.png">
+  
+  
+  
+  <title>编写sql的思考 - 砧板的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="编写sql的思考"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-10 10:30" pubdate>
+          August 10, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          10k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          85 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">编写sql的思考</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>练习sql过程中的感悟                                                                                                                                                                  </p>
+<h1 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h1><h3 id="复杂联合查询"><a href="#复杂联合查询" class="headerlink" title="复杂联合查询"></a>复杂联合查询</h3><p>编写SQL查询以查找每个部门中薪资最高的员工。 </p>
+<p>每个。。。最。。的。。</p>
+<p>思路：</p>
+<ol>
+<li><p>group by子查询每个最。。的</p>
+</li>
+<li><p>连接 in &#x2F; not in</p>
+</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select<br> d.name Department,<br> e.name Employee ,<br> e.salary Salary <br>from Employee e left join Department d on e.departmentId = d.id <br>where <br>(e.departmentId , e.salary) in <br>( select departmentId,max(salary) from Employee group by departmentId)<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h3><p>编写 SQL 查询对分数进行排序。排名按以下规则计算:</p>
+<ol>
+<li>分数应按从高到低排列。</li>
+<li>如果两个分数相等，那么两个分数的排名应该相同。</li>
+<li>在排名相同的分数后，排名数应该是下一个连续的整数。换句话说，排名之间不应该有空缺的数字。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select a.score as Score,<br>(select count(distinct b.score) from scores as b<br>where  b.Score &gt;= a.Score) as &#x27;rank&#x27;<br>from scores as a <br>order by a.score desc<br></code></pre></td></tr></table></figure>
+
+<h3 id="Limit"><a href="#Limit" class="headerlink" title="Limit"></a>Limit</h3><p>编写一个 SQL 查询，获取并返回 <code>Employee</code> 表中第二高的薪水 。如果不存在第二高的薪水，查询应该返回 <code>null</code> 。</p>
+<p>limit  index，num从第1个开始，选择一个</p>
+<p>limit i 返回前i个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select <br>(select DISTINCT salary from employee <br>order by salary desc<br>limit 0 , 1)<br>as  SecondHighestSalary<br></code></pre></td></tr></table></figure>
+
+<h3 id="like"><a href="#like" class="headerlink" title="like"></a>like</h3><p>写一条 SQL 语句，查询患有 I 类糖尿病的患者 ID （patient_id）、患者姓名（patient_name）以及其患有的所有疾病代码（conditions）。I 类糖尿病的代码总是包含前缀 DIAB1 。</p>
+<ol>
+<li>%匹配的是字符串，任意长度，不包括空格</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select * from Patients p<br>where(<br>    p.conditions like &#x27;DIAB1%&#x27; or conditions like &#x27;% DIAB1%&#x27;<br>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="销售分析"><a href="#销售分析" class="headerlink" title="销售分析"></a>销售分析</h3><p>编写一个SQL查询，报告<code>2019年春季</code>才售出的产品。即<strong>仅</strong>在<code>**2019-01-01**</code>至<code>**2019-03-31**</code>（含）之间出售的商品。</p>
+<ol>
+<li>between and</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs mysql">输入：<br>Product table:<br>+------------+--------------+------------+<br>| product_id | product_name | unit_price |<br>+------------+--------------+------------+<br>| 1          | S8           | 1000       |<br>| 2          | G4           | 800        |<br>| 3          | iPhone       | 1400       |<br>+------------+--------------+------------+<br>Sales table:<br>+-----------+------------+----------+------------+----------+-------+<br>| seller_id | product_id | buyer_id | sale_date  | quantity | price |<br>+-----------+------------+----------+------------+----------+-------+<br>| 1         | 1          | 1        | 2019-01-21 | 2        | 2000  |<br>| 1         | 2          | 2        | 2019-02-17 | 1        | 800   |<br>| 2         | 2          | 3        | 2019-06-02 | 1        | 800   |<br>| 3         | 3          | 4        | 2019-05-13 | 2        | 2800  |<br>+-----------+------------+----------+------------+----------+-------+<br>输出：<br>+-------------+--------------+<br>| product_id  | product_name |<br>+-------------+--------------+<br>| 1           | S8           |<br>+-------------+--------------+<br>select distinct  p.product_id  ,p.product_name from Product p , Sales s1<br>where p.product_id = s1.product_id and p.product_id not in(<br>    select product_id from Sales s<br>    where(<br>        s.sale_date not between &#x27;2019-01-01&#x27; and &#x27;2019-03-31&#x27; <br>        # s.sale_date is null<br>    )<br>)<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="判断空的方法"><a href="#判断空的方法" class="headerlink" title="判断空的方法"></a>判断空的方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select DISTINCT IFNULL(b.ssfk, 0) <br>from cxc b,sysgani c <br>where b.gldw=c.orgid and ssfk is null / is not null<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="更新和修改的复杂语句"><a href="#更新和修改的复杂语句" class="headerlink" title="更新和修改的复杂语句"></a>更新和修改的复杂语句</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#更新的复杂语句<br>UPDATE student SET ssex=&#x27;M&#x27;<br> WHERE sname not in (select sname from student s);<br><br>#删除的复杂语句<br>DELETE FROM student WHERE sname in (select sname from  student left join sc on student.sid = sc.sid where( student.sid = sc.sid ));<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="注意权限关系分数排名"><a href="#注意权限关系分数排名" class="headerlink" title="注意权限关系分数排名"></a>注意权限关系分数排名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">select a.score ,<br>    (select distinct count(distinct b.score) <br>        from scores b<br>        where  b.Score &gt;= a.Score) as &#x27;rank&#x27;<br>from scores a <br>order by a.score desc<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs mysql">#示例；在表GoodsMade_Labour的SID列上创建唯一索引IX_GoodsMade_Labour，代码如下：<br>create unique index IX_GoodsMade_Labour on GoodsMade_Labour(SID)<br><br>#如果要创建聚集索引，可使用关键字clustered,代码如下：<br>create unique clustered index IX_GoodsMade_Labour on GoodsMade_Labour(SID)<br><br>#1.添加PRIMARY KEY（主键索引）<br>mysql&gt;ALTER TABLE table_name ADD PRIMARY KEY ( column )<br><br>#2.添加UNIQUE(唯一索引)<br>mysql&gt;ALTER TABLE table_name ADD UNIQUE (<br>column<br>)<br><br>#3.添加INDEX(普通索引)<br>mysql&gt;ALTER TABLE table_name ADD INDEX index_name ( column )<br><br>#4.添加FULLTEXT(全文索引)<br>mysql&gt;ALTER TABLE table_name ADD FULLTEXT ( column)<br><br>#5.添加多列索引<br>mysql&gt;ALTER TABLE table_name ADD INDEX index_name ( column1, column2, column3 )<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="对列的操作"><a href="#对列的操作" class="headerlink" title="对列的操作"></a>对列的操作</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mysql">修改表名：alter table t_book rename to bbb;<br><br>添加列：alter table 表名 add column 列名 varchar(30);<br><br>删除列：alter table 表名 drop column 列名;<br><br>修改列名MySQL： alter table bbb change nnnnn hh int;<br><br>修改列属性：alter table t_book modify name varchar(22);  <br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="一些sql"><a href="#一些sql" class="headerlink" title="一些sql"></a>一些sql</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><code class="hljs mysql"><br><br>create database hello;<br>use hello;<br><br>create table student(<br>                        sid int(11),<br>                        sname varchar(10),<br>                        birthday datetime,<br>                        ssex varchar(10),<br>                        classid int(11)<br>);<br>create table sc(<br>                   sid int(11),<br>                   cid int(11),<br>                   score int(11)<br>);<br>create table course(<br>                       cid int(11),<br>                       cname varchar(10),<br>                       tid varchar(10)<br>);<br>create table class(<br>                      classid int(11),<br>                      classname varchar(20)<br>);<br>create table teacher(<br>                        tid int(11)primary key,<br>                        tname varchar(10),<br>                        tsex tinyint(4),<br>                        tbirthday date,<br>                        taddress varchar(255),<br>                        temail varchar(255),<br>                        tmoney decimal(20,2)<br>);<br><br>select * from student,class where student.classid = class.classid;<br><br>insert into class(classid,classname) values (1,&#x27;class1&#x27;),(2,&#x27;class2&#x27;),(3,&#x27;class3&#x27;),(4,&#x27;class4&#x27;),(5,&#x27;class5&#x27;);<br><br>insert into student(sid,sname,birthday,ssex,classid) values (1,&#x27;littleRed&#x27;,null,&#x27;girl&#x27;,1),(2,&#x27;littleMin&#x27;,null,&#x27;girl&#x27;,1),(6,&#x27;littleZhan&#x27;,null,&#x27;girl&#x27;,1),(3,&#x27;littleBlue&#x27;,null,&#x27;girl&#x27;,2),(4,&#x27;little1&#x27;,null,&#x27;girl&#x27;,3),(5,&#x27;little2&#x27;,null,&#x27;girl&#x27;,4);<br><br>insert into sc(sid,cid,score) values (1,1,90),(1,2,80),(2,1,40),(2,2,70);<br>insert into sc value (3,1,90);<br><br>insert into course(cid,cname,tid) values (1,&#x27;math&#x27;,1),(2,&#x27;english&#x27;,2);<br><br>select count(*) from student,class,sc;<br><br>select * from student,class where student.classid = class.classid;<br><br>#同时将两表作为参考对象，根据ON后给出的两表的条件将两表连接起来。结果则是两表同时满足ON后的条件的部分才会列出。<br>select * from student<br>                  inner join sc on student.sid=sc.sid;<br><br>#是以左表为基础，根据ON后给出的两表的条件将两表连接起来。结果会将左表所有的查询信息列出，而右表只列出ON后条件与左表满足的部分。<br>select * from student<br>                  left join class<br>                            on student.classid=class.classid;<br><br>select * from class<br>    right join  student on class.classid = student.classid;<br><br>#查找语文相同的学生个数<br>select score,count(*) from sc<br>where cid = &#x27;1&#x27;<br>group by score<br>having count(*) &gt;= 2;<br><br>#查询出每门课都大于80分的学生的姓名 有bug<br>select sid from student<br>where sid not in<br>      (select  sid  from sc where score &lt; 80);<br><br>#查询各科成绩平均分，显示课程名称和平均分并按照平均分降序排序<br>select cname, avg(score) 平均分 from course,sc<br>where course.cid = sc.cid<br>group by course.cid<br>order by 平均分 desc;<br><br>#查询考试超过2门不及格学生的平均成绩<br>select avg(score) from sc where sid in<br>                                (select sid from sc where score &lt; 60 group by sid having count(*) &gt;=2);<br><br>#in ，not in的用法<br>SELECT * FROM TABLE1 a WHERE a.id NOT IN (SELECT b.id FROM TABLE2 b);<br><br>#use group by needs attention<br>SELECT max(classid) from  class group by<br>                          classname;<br><br>#删除某列的语法<br>alter table course delete colunm tid;<br><br>#更新的复杂语句<br>UPDATE student SET ssex=&#x27;M&#x27;<br> WHERE sname not in (select sname from student s);<br><br>#删除的复杂语句<br>DELETE FROM student WHERE sname in (select sname from  student left join sc on student.sid = sc.sid where( student.sid = sc.sid ));<br><br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="错题"><a href="#错题" class="headerlink" title="错题"></a>错题</h3><h4 id="字符长度"><a href="#字符长度" class="headerlink" title="字符长度"></a>字符长度</h4><p><img src="C:\Users\FLZ\AppData\Roaming\Typora\typora-user-images\image-20230514144351486.png" srcset="/img/loading.gif" lazyload alt="image-20230514144351486"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> tweet_id <span class="hljs-keyword">from</span> tweets<br><br><span class="hljs-keyword">where</span> length(content) <span class="hljs-operator">&gt;</span> <span class="hljs-number">15</span> <br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="group-by-count-计算行数-判断空"><a href="#group-by-count-计算行数-判断空" class="headerlink" title="group by+count(*)计算行数,判断空"></a>group by+count(*)计算行数,判断空</h4><p>conut（*）在内容为空的时候也会加，反正就是算行数</p>
+<p><img src="D:\Study\求职\学习笔记\图片文件\EE69.png" srcset="/img/loading.gif" lazyload alt="EE69"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> v.customer_id ,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) count_no_trans  <span class="hljs-keyword">from</span> visits v<br><span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <br>    transactions t<br><span class="hljs-keyword">on</span> <br>    v.visit_id <span class="hljs-operator">=</span> t.visit_id<br><span class="hljs-keyword">where</span> <br>    t.amount <span class="hljs-keyword">is</span> <span class="hljs-keyword">null</span><br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <br>    v.customer_id<br><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="笛卡尔积，利用空计数不增加"><a href="#笛卡尔积，利用空计数不增加" class="headerlink" title="笛卡尔积，利用空计数不增加"></a>笛卡尔积，利用空计数不增加</h4><p><img src="D:\Study\求职\学习笔记\图片文件\UPO.png" srcset="/img/loading.gif" lazyload alt="UPO"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> stu.student_id , stu.student_name, sub.subject_name, <span class="hljs-built_in">count</span>(e.student_id) attended_exams<br><span class="hljs-keyword">from</span> <br>    students stu <span class="hljs-keyword">cross</span> <span class="hljs-keyword">join</span> subjects sub<br><span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span><br>    examinations e<br><span class="hljs-keyword">on</span> <br>    e.student_id <span class="hljs-operator">=</span> stu.student_id <span class="hljs-keyword">and</span> e.subject_name <span class="hljs-operator">=</span> sub.subject_name<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> stu.student_id , stu.student_name, sub.subject_name<br><span class="hljs-keyword">Order</span> <span class="hljs-keyword">by</span> student_id,subject_name<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="group-by-having"><a href="#group-by-having" class="headerlink" title="group by+having"></a>group by+having</h4><p><img src="D:\Study\求职\学习笔记\图片文件\0S2VT.png" srcset="/img/loading.gif" lazyload alt="0S2VT"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> e1.name <br><span class="hljs-keyword">from</span> <br>    employee e1<br><span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <br>    employee e2<br><span class="hljs-keyword">on</span><br>    e1.id <span class="hljs-operator">=</span> e2.managerId<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <br>    e1.id<br><span class="hljs-keyword">having</span> <br>    <span class="hljs-built_in">count</span>(e2.name) <span class="hljs-operator">&gt;</span> <span class="hljs-number">4</span><br><br></code></pre></td></tr></table></figure>
+
+
+
+<p>子查询</p>
+<p><img src="D:\Study\求职\学习笔记\图片文件\EQL3.png" srcset="/img/loading.gif" lazyload alt="EQL3"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    contest_id ,round( (<span class="hljs-built_in">count</span>(contest_id) <span class="hljs-operator">/</span> (<span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">from</span> users))<span class="hljs-operator">*</span><span class="hljs-number">100</span>  , <span class="hljs-number">2</span>) percentage <br><span class="hljs-keyword">from</span> <br>    register r<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <br>    contest_id<br><span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span><br>    percentage <span class="hljs-keyword">desc</span> , contest_id<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="问题，left-join"><a href="#问题，left-join" class="headerlink" title="问题，left join"></a>问题，left join</h4><p>a left join b</p>
+<p>on ..</p>
+<p>则a，后边加了b几行的数据，然后把几行b都加起来可以吗</p>
+<h4 id="日期-group-by"><a href="#日期-group-by" class="headerlink" title="日期 , group by"></a>日期 , group by</h4><p><img src="D:\Study\求职\学习笔记\图片文件\LRP65RO0.png" srcset="/img/loading.gif" lazyload alt="LRP65RO0"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    DATE_FORMAT(trans_date, <span class="hljs-string">&#x27;%Y-%m&#x27;</span>) <span class="hljs-keyword">as</span> <span class="hljs-keyword">month</span>,<br>    country ,<br>    <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)trans_count ,<br>    <span class="hljs-built_in">sum</span>(if(state<span class="hljs-operator">=</span><span class="hljs-string">&#x27;approved&#x27;</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>))approved_count ,<br>    <span class="hljs-built_in">sum</span>(amount)trans_total_amount , <br>    <span class="hljs-built_in">sum</span>(if(state<span class="hljs-operator">=</span><span class="hljs-string">&#x27;approved&#x27;</span>,amount,<span class="hljs-number">0</span>))approved_total_amount<br><span class="hljs-keyword">from</span> <br>    Transactions<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span><br>    <span class="hljs-keyword">month</span>,country<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h4 id="分组-最-group-by"><a href="#分组-最-group-by" class="headerlink" title="分组+最+group by"></a>分组+最+group by</h4><p><img src="D:\Study\求职\学习笔记\图片文件\53LK.png" srcset="/img/loading.gif" lazyload alt="53LK"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span><br>    round(<span class="hljs-built_in">sum</span>(if(order_date <span class="hljs-operator">=</span> customer_pref_delivery_date ,<span class="hljs-number">1</span> ,<span class="hljs-number">0</span>)) <span class="hljs-operator">*</span> <span class="hljs-number">100</span> <span class="hljs-operator">/</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>),<span class="hljs-number">2</span>)<br>    immediate_percentage <br><span class="hljs-keyword">from</span> <br>    delivery d1<br><span class="hljs-keyword">where</span><br>    (customer_id,order_date) <span class="hljs-keyword">in</span><br>    (<span class="hljs-keyword">select</span> <br>        customer_id,<span class="hljs-built_in">min</span>(order_date) <br>    <span class="hljs-keyword">from</span><br>        delivery d2<br>    <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span><br>        customer_id<br>    )<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="if-判断空"><a href="#if-判断空" class="headerlink" title="if 判断空"></a>if 判断空</h4><p>if(a.id is not null,1,0)</p>
+<h4 id="判断不同种-distinct"><a href="#判断不同种-distinct" class="headerlink" title="判断不同种 + distinct"></a>判断不同种 + distinct</h4><p><img src="D:\Study\求职\学习笔记\图片文件\C0N.png" srcset="/img/loading.gif" lazyload alt="C0N"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    teacher_id , <span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> subject_id) cnt <br><span class="hljs-keyword">from</span> <br>    teacher <br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span>    <br>    teacher_id<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="查询-老师a-有所有课程b-group-having-结果集内有空的解决方法"><a href="#查询-老师a-有所有课程b-group-having-结果集内有空的解决方法" class="headerlink" title="查询 老师a 有所有课程b  group + having   结果集内有空的解决方法"></a>查询 老师a 有所有课程b  group + having   结果集内有空的解决方法</h4><p><img src="D:\Study\求职\学习笔记\图片文件\J307XNE.png" srcset="/img/loading.gif" lazyload alt="J307XNE"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    <span class="hljs-keyword">distinct</span> customer_id<br><span class="hljs-keyword">from</span> <br>    customer c<br><span class="hljs-keyword">where</span> <br>    customer_id <span class="hljs-keyword">in</span> <br>    (<br>        <span class="hljs-keyword">select</span> <br>        <span class="hljs-keyword">distinct</span> if(<span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> customer_id , c.product_key) <span class="hljs-operator">=</span> <br>        <span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span> p.product_key),customer_id,<span class="hljs-keyword">null</span>)   <br>        <span class="hljs-keyword">from</span> <br>            customer c <br>        <span class="hljs-keyword">cross</span> <span class="hljs-keyword">join</span><br>            product p<br>        <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span><br>            customer_id<br>    )<br>    <br>    <br><span class="hljs-keyword">select</span> <br>	customer_id<br><span class="hljs-keyword">from</span><br>	customer<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <br>	customer_id<br><span class="hljs-keyword">having</span><br>	<span class="hljs-built_in">count</span>(<span class="hljs-keyword">distinct</span>(product_key))<span class="hljs-operator">=</span>(<span class="hljs-keyword">select</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">from</span> product)<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="统计-和-union-all"><a href="#统计-和-union-all" class="headerlink" title="统计 和 union all"></a>统计 和 union all</h4><p><img src="D:\Study\求职\学习笔记\图片文件\U.png" srcset="/img/loading.gif" lazyload alt="U"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    <span class="hljs-string">&#x27;Low Salary&#x27;</span> <span class="hljs-keyword">as</span> category ,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) accounts_count<br><span class="hljs-keyword">from</span> <br>    accounts a1<br><span class="hljs-keyword">where</span> <br>    a1.income <span class="hljs-operator">&lt;</span> <span class="hljs-number">20000</span><br><span class="hljs-keyword">union</span> <span class="hljs-keyword">all</span><br><span class="hljs-keyword">select</span> <br>    <span class="hljs-string">&#x27;Average Salary&#x27;</span> <span class="hljs-keyword">as</span> category ,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) accounts_count<br><span class="hljs-keyword">from</span> <br>    accounts a2<br><span class="hljs-keyword">where</span> <br>    a2.income <span class="hljs-operator">&gt;=</span> <span class="hljs-number">20000</span> <span class="hljs-keyword">and</span> a2.income <span class="hljs-operator">&lt;=</span> <span class="hljs-number">50000</span><br><span class="hljs-keyword">union</span> <span class="hljs-keyword">all</span><br><span class="hljs-keyword">select</span> <br>    <span class="hljs-string">&#x27;High Salary&#x27;</span> <span class="hljs-keyword">as</span> category ,<span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) accounts_count<br><span class="hljs-keyword">from</span> <br>    accounts a3<br><span class="hljs-keyword">where</span> <br>    a3.income <span class="hljs-operator">&gt;</span> <span class="hljs-number">50000</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="多种条件筛选-临时表-union-all"><a href="#多种条件筛选-临时表-union-all" class="headerlink" title="多种条件筛选  临时表  union all"></a>多种条件筛选  临时表  union all</h4><p><img src="D:\Study\求职\学习笔记\图片文件\VG3.png" srcset="/img/loading.gif" lazyload alt="VG3"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    employee_id , department_id<br><span class="hljs-keyword">from</span> <br>    employee e1<br><span class="hljs-keyword">where</span> <br>    e1.primary_flag <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Y&#x27;</span><br><span class="hljs-keyword">union</span><br><span class="hljs-keyword">select</span> <br>    employee_id , department_id<br><span class="hljs-keyword">from</span> <br>    employee e2<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span><br>    employee_id<br><span class="hljs-keyword">having</span> <br>    <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-operator">=</span> <span class="hljs-number">1</span><br><span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> employee_id<br><br><span class="hljs-keyword">with</span> t <span class="hljs-keyword">as</span>(<br>    <span class="hljs-keyword">select</span> <span class="hljs-operator">*</span>,<span class="hljs-built_in">count</span>(<span class="hljs-number">1</span>) <span class="hljs-keyword">over</span>(<span class="hljs-keyword">partition</span> <span class="hljs-keyword">by</span> employee_id) cnt<br>    <span class="hljs-keyword">from</span> Employee<br>)<br><span class="hljs-keyword">select</span> employee_id,department_id <span class="hljs-keyword">from</span> t <span class="hljs-keyword">where</span> primary_flag<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Y&#x27;</span> <span class="hljs-keyword">or</span> cnt<span class="hljs-operator">=</span><span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="使用group-by-max-min-达成最……的"><a href="#使用group-by-max-min-达成最……的" class="headerlink" title="使用group by + max min 达成最……的"></a>使用group by + max min 达成最……的</h4><p><img src="D:\Study\求职\学习笔记\图片文件\MC.png" srcset="/img/loading.gif" lazyload alt="MC"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">select</span> <br>    product_id <span class="hljs-keyword">as</span> product_id,<span class="hljs-number">10</span> <span class="hljs-keyword">as</span> price <br><span class="hljs-keyword">from</span> <br>    Products <br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> <br>    product_id<br><span class="hljs-keyword">having</span> <br>    <span class="hljs-built_in">min</span>(change_date)<span class="hljs-operator">&gt;</span><span class="hljs-string">&#x27;2019-08-16&#x27;</span><br><span class="hljs-keyword">union</span><br><span class="hljs-keyword">select</span> <br>	product_id, new_price <span class="hljs-keyword">as</span> price <br><span class="hljs-keyword">from</span> products<br><span class="hljs-keyword">where</span> <br>    (product_id, change_date) <br>    <span class="hljs-keyword">in</span> (<br>        <span class="hljs-keyword">select</span> product_id, <span class="hljs-built_in">max</span>(change_date)<br>        <span class="hljs-keyword">from</span> products<br>        <span class="hljs-keyword">where</span> change_date <span class="hljs-operator">&lt;=</span> <span class="hljs-string">&#x27;2019-08-16&#x27;</span><br>        <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> product_id<br>    )<br><br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="日期的格式处理-union-不能合并相同"><a href="#日期的格式处理-union-不能合并相同" class="headerlink" title="日期的格式处理,union 不能合并相同"></a>日期的格式处理,union 不能合并相同</h4><p><img src="D:\Study\求职\学习笔记\图片文件\58S2D.png" srcset="/img/loading.gif" lazyload alt="58S2D"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs sql">(<span class="hljs-keyword">select</span> <br>    u.name <span class="hljs-keyword">as</span> results<br><span class="hljs-keyword">from</span> <br>    movierating m <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> users u <br>    <span class="hljs-keyword">on</span> <br>        m.user_id <span class="hljs-operator">=</span> u.user_id<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> m.user_id<br><span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">desc</span> , u.name<br>limit <span class="hljs-number">1</span><br>)<br><span class="hljs-keyword">union</span> <span class="hljs-keyword">all</span><br>(<br><span class="hljs-keyword">select</span> i.title <span class="hljs-keyword">as</span> results<br><span class="hljs-keyword">from</span><br>    movierating m <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> movies i<br><span class="hljs-keyword">on</span> <br>    m.movie_id <span class="hljs-operator">=</span> i.movie_id<br><span class="hljs-keyword">where</span><br>    m.created_at <span class="hljs-keyword">like</span> &quot;2020-02%&quot;<br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> m.movie_id<br><span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> <span class="hljs-built_in">avg</span>(rating) <span class="hljs-keyword">desc</span>, i.title <br>limit <span class="hljs-number">1</span><br>)<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h4 id="窗口，使用子表，子表相连接"><a href="#窗口，使用子表，子表相连接" class="headerlink" title="窗口，使用子表，子表相连接"></a>窗口，使用子表，子表相连接</h4><p><img src="D:\Study\求职\学习笔记\图片文件\FEBGB.png" srcset="/img/loading.gif" lazyload alt="FEBGB"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs sql">#连接<br><span class="hljs-keyword">with</span> a1 <span class="hljs-keyword">as</span>(<br>    <span class="hljs-keyword">select</span> <br>        visited_on ,<span class="hljs-built_in">sum</span>(amount) amount<br>    <span class="hljs-keyword">from</span><br>        customer<br>    <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span>    <br>        visited_on<br>)<br><span class="hljs-keyword">select</span> <br>    c1.visited_on ,<span class="hljs-built_in">sum</span>(c2.amount) amount , round(<span class="hljs-built_in">avg</span>(c2.amount) , <span class="hljs-number">2</span>) average_amount<br><span class="hljs-keyword">from</span> <br>    a1 c1 <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> a1 <span class="hljs-keyword">as</span> c2<br><span class="hljs-keyword">on</span>  <br>    datediff(c1.visited_on , c2.visited_on) <span class="hljs-keyword">between</span> <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-number">6</span><br><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span>    <br>    c1.visited_on<br><span class="hljs-keyword">having</span><br>    <span class="hljs-built_in">count</span>(c2.visited_on) <span class="hljs-operator">=</span> <span class="hljs-number">7</span><br><br><br>#窗口<br><span class="hljs-keyword">with</span> t1 <span class="hljs-keyword">as</span> (<br>    <span class="hljs-keyword">select</span> visited_on,<span class="hljs-built_in">sum</span>(amount) <span class="hljs-keyword">as</span> amount <br>    <span class="hljs-keyword">from</span> Customer<br>    <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> visited_on<br>)<br><br><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> visited_on,sum_amount <span class="hljs-keyword">as</span> amount,round(average_amount,<span class="hljs-number">2</span>) <span class="hljs-keyword">as</span> average_amount <br><span class="hljs-keyword">from</span><br>(<br>    <span class="hljs-keyword">select</span> visited_on,<br>        <span class="hljs-built_in">sum</span>(amount) <span class="hljs-keyword">over</span>(<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> visited_on <span class="hljs-keyword">rows</span> <span class="hljs-number">6</span> preceding) <span class="hljs-keyword">as</span> sum_amount,<br>        <span class="hljs-built_in">avg</span>(amount) <span class="hljs-keyword">over</span>(<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> visited_on <span class="hljs-keyword">rows</span> <span class="hljs-number">6</span> preceding) <span class="hljs-keyword">as</span> average_amount<br>    <span class="hljs-keyword">from</span>  t1<br>)t2 <br><span class="hljs-keyword">where</span> datediff(visited_on,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">min</span>(visited_on)<span class="hljs-keyword">from</span> Customer))<span class="hljs-operator">&gt;=</span><span class="hljs-number">6</span><br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>编写sql的思考</div>
+      <div>http://example.com/2023/08/10/编写sql的思考 (2)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 10, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/10/%E5%B7%A5%E4%BD%9C%E7%BB%8F%E9%AA%8C%20(2)/" title="工作经验">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">工作经验</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/07/05/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

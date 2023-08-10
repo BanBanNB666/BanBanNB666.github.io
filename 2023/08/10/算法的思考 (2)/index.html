@@ -1,0 +1,773 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言：算法菜鸡的练习之旅。 第一天的整理一，合并有序数（leetcode88）心得：我听了一节二分法的课再开始刷题的，谈及边界的时候，他特别强调，你要知道自己的变量代表什么，你才知道循环条件是什么。一个重要思想是：你要知道自己的变量代表什么，你才知道循环条件是什么。写的时候问自己，这个边界在下一个循环中是被排除的吗？ 法一：双指针。空间，时间复杂度On。 ​		使用临时数组来排序。 ​		不熟练的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法的思考">
+<meta property="og:url" content="http://example.com/2023/08/10/%E7%AE%97%E6%B3%95%E7%9A%84%E6%80%9D%E8%80%83%20(2)/index.html">
+<meta property="og:site_name" content="砧板的博客">
+<meta property="og:description" content="前言：算法菜鸡的练习之旅。 第一天的整理一，合并有序数（leetcode88）心得：我听了一节二分法的课再开始刷题的，谈及边界的时候，他特别强调，你要知道自己的变量代表什么，你才知道循环条件是什么。一个重要思想是：你要知道自己的变量代表什么，你才知道循环条件是什么。写的时候问自己，这个边界在下一个循环中是被排除的吗？ 法一：双指针。空间，时间复杂度On。 ​		使用临时数组来排序。 ​		不熟练的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-08-10T02:31:55.316Z">
+<meta property="article:modified_time" content="2023-08-10T02:33:21.318Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>算法的思考 - 砧板的博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="算法的思考"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-10 10:31" pubdate>
+          August 10, 2023 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          125 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">算法的思考</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>前言：算法菜鸡的练习之旅。</p>
+<h2 id="第一天的整理"><a href="#第一天的整理" class="headerlink" title="第一天的整理"></a>第一天的整理</h2><h3 id="一，合并有序数（leetcode88）"><a href="#一，合并有序数（leetcode88）" class="headerlink" title="一，合并有序数（leetcode88）"></a>一，合并有序数（leetcode88）</h3><p><strong>心得</strong>：我听了一节二分法的课再开始刷题的，谈及边界的时候，他特别强调，你要知道自己的变量代表什么，你才知道循环条件是什么。一个重要思想是：<strong>你要知道自己的变量代表什么，你才知道循环条件是什么。写的时候问自己，这个边界在下一个循环中是被排除的吗？</strong></p>
+<p>法一：双指针。空间，时间复杂度On。</p>
+<p>​		使用临时数组来排序。</p>
+<p>​		<strong>不熟练的点</strong>：int[]和arraylist<Integer>的相互转变</p>
+<p>法二：逆序双指针。时间On，空间O1.</p>
+<p>​		因为第一个数组是比较大的，所以可以逆序，从后往前，不断挑选最大的数字加入。</p>
+<p>​		<strong>不熟练的点</strong>：循环条件，临时变量的设置，指针移动导致的<strong>边界问题</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> n)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> m + n - <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">while</span> (p1 &gt;= <span class="hljs-number">0</span> || p2 &gt;= <span class="hljs-number">0</span>)&#123;<br>            <span class="hljs-keyword">if</span>(p1 == -<span class="hljs-number">1</span>)&#123;<br>                cur = nums2[p2];<br>                p2--;<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ( p2 == -<span class="hljs-number">1</span> )&#123;<br>                <span class="hljs-keyword">break</span>;<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( nums1[p1] &gt; nums2[p2] )&#123;<br>                cur = nums1[p1];<br>                p1--;<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>( nums1[p1] &lt;= nums2[p2] )&#123;<br>                cur = nums2[p2];<br>                p2--;<br>            &#125;<br>            nums1[tail] = cur;<br>            tail--;<br>        &#125;<br>        <br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>法三：合并并快排。空间O1，时间Onlogn</p>
+<p>​		<strong>不熟练</strong>的点：库函数使用不熟练。合并和快排都不会。</p>
+<h3 id="二，移除元素（力扣27）"><a href="#二，移除元素（力扣27）" class="headerlink" title="二，移除元素（力扣27）"></a>二，移除元素（力扣27）</h3><p>简单双指针。</p>
+<h3 id="三，删除有序数重复项（力扣25）"><a href="#三，删除有序数重复项（力扣25）" class="headerlink" title="三，删除有序数重复项（力扣25）"></a>三，删除有序数重复项（力扣25）</h3><p>简单双指针</p>
+<h3 id="四，删除有序数重复项Ⅱ（力扣80）"><a href="#四，删除有序数重复项Ⅱ（力扣80）" class="headerlink" title="四，删除有序数重复项Ⅱ（力扣80）"></a>四，删除有序数重复项Ⅱ（力扣80）</h3><p><strong>心得</strong>：它的边界令我心碎，东一个补丁，西一个补丁。写代码之前要注意思路，脑海里模拟随着循环指针的行进。特别注意一个0个，所有全插入，所有后插入等等情况。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs awk">给你一个有序数组 nums ，请你 原地 删除重复出现的元素，使得出现次数超过两次的元素只出现两次 ，返回删除后数组的新长度。<br><br>不要使用额外的数组空间，你必须在 原地 修改输入数组 并在使用 O(<span class="hljs-number">1</span>) 额外空间的条件下完成。<br><br> <br>说明：<br><br>为什么返回数值是整数，但输出的答案是数组呢？<br><br>请注意，输入数组是以「引用」方式传递的，这意味着在函数里修改输入数组对于调用者是可见的。<br><br>你可以想象内部操作如下:<br><br><span class="hljs-regexp">//</span> nums 是以“引用”方式传递的。也就是说，不对实参做任何拷贝<br>int len = removeDuplicates(nums);<br><br><span class="hljs-regexp">//</span> 在函数里修改输入数组对于调用者是可见的。<br><span class="hljs-regexp">//</span> 根据你的函数返回的长度, 它会打印出数组中 该长度范围内 的所有元素。<br><span class="hljs-keyword">for</span> (int i = <span class="hljs-number">0</span>; i &lt; len; i++) &#123;<br>    print(nums[i]);<br>&#125;<br><br><br>示例 <span class="hljs-number">1</span>：<br><br>输入：nums = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]<br>输出：<span class="hljs-number">5</span>, nums = [<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]<br>解释：函数应返回新长度 length = <span class="hljs-number">5</span>, 并且原数组的前五个元素被修改为 <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> 。 不需要考虑数组中超出新长度后面的元素。<br>示例 <span class="hljs-number">2</span>：<br><br>输入：nums = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]<br>输出：<span class="hljs-number">7</span>, nums = [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>]<br>解释：函数应返回新长度 length = <span class="hljs-number">7</span>, 并且原数组的前五个元素被修改为 <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span> 。 不需要考虑数组中超出新长度后面的元素。<br><br>来源：力扣（LeetCode）<br>链接：https:<span class="hljs-regexp">//</span>leetcode.cn<span class="hljs-regexp">/problems/</span>remove-duplicates-from-sorted-array-ii<br>著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。<br></code></pre></td></tr></table></figure>
+
+<p>我写的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeDuplicates</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">front</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">before</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">Boolean</span> <span class="hljs-variable">flagOnce</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br><br>        <span class="hljs-keyword">while</span> (before &lt; nums.length) &#123;<br>            <span class="hljs-keyword">if</span> (nums[front] == nums[before]) &#123;<br>                sum++;<br>                <span class="hljs-keyword">if</span> (sum &lt;= <span class="hljs-number">2</span>) &#123;<br>                    <span class="hljs-keyword">if</span>(flagOnce)&#123;<br>                        flagOnce = <span class="hljs-literal">false</span>;<br>                        nums[front] = nums[before];<br>                    &#125; <span class="hljs-keyword">else</span> &#123;<br>                        front++;<br>                        nums[front] = nums[before];<br>                    &#125;<br>                &#125;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                sum = <span class="hljs-number">1</span>;<br>                front++;<br>                nums[front] = nums[before];<br>            &#125;<br>            before++;<br>        &#125;<br>        <span class="hljs-keyword">return</span> front + <span class="hljs-number">1</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="第二天的整理"><a href="#第二天的整理" class="headerlink" title="第二天的整理"></a>第二天的整理</h2><h3 id="169-多数元素"><a href="#169-多数元素" class="headerlink" title="169. 多数元素"></a>169. 多数元素</h3><p>心得：相较于第一天的练习我只能说长进太少了，下次要开始编写代码之前，一定要把昨天的整理复习一遍再开始。</p>
+<p>这道题打开我思路就是hashamap给它记录下来。但其实是脑经急转弯一般的题目，思考方式一是记录，二是相互碰撞相消，三是排序。</p>
+<p>给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n&#x2F;2 ⌋ 的元素。</p>
+<p>你可以假设数组是非空的，并且给定的数组总是存在多数元素。</p>
+<p>示例 1：</p>
+<p>输入：nums &#x3D; [3,2,3]<br>输出：3<br>示例 2：</p>
+<p>输入：nums &#x3D; [2,2,1,1,1,2,2]<br>输出：2</p>
+<h3 id="121-买卖股票的最佳时机"><a href="#121-买卖股票的最佳时机" class="headerlink" title="121. 买卖股票的最佳时机"></a>121. 买卖股票的最佳时机</h3><p>简单dp</p>
+<h3 id="274-H-指数"><a href="#274-H-指数" class="headerlink" title="274. H 指数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/h-index/">274. H 指数</a></h3><p>心得：简单题目。练习了，Arrays的方法，HashMap的方法。注意：Array，HashMap使用不是很熟练</p>
+<h3 id="380-O-1-时间插入、删除和获取随机元素"><a href="#380-O-1-时间插入、删除和获取随机元素" class="headerlink" title="380. O(1) 时间插入、删除和获取随机元素"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/insert-delete-getrandom-o1/">380. O(1) 时间插入、删除和获取随机元素</a></h3><p>心得：同上。但是第一次我没有直接运行起来，原因是我在写代码的时候，思考过程中漏洞百出，推理出的流程根本无法实现功能。</p>
+<h3 id="13-罗马数字转整数"><a href="#13-罗马数字转整数" class="headerlink" title="13. 罗马数字转整数"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/roman-to-integer/">13. 罗马数字转整数</a></h3><p>心得：对字符串的stringbuffer等非常不熟练。思考过程中忽略了正则表达式。思考过程中忽略了hashMap的特性。</p>
+<p>问题：string 为什么又有length()括号 switchcase语法</p>
+<p>​		</p>
+<h2 id="第三天的整理"><a href="#第三天的整理" class="headerlink" title="第三天的整理"></a>第三天的整理</h2><h3 id="lambda表达式和排序练习"><a href="#lambda表达式和排序练习" class="headerlink" title="lambda表达式和排序练习"></a>lambda表达式和排序练习</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> org.example;<br><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.Collections;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomObjectSorting</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 创建自定义对象的 ArrayList</span><br>        ArrayList&lt;Person&gt; people = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>        people.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">25</span>));<br>        people.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-number">30</span>));<br>        people.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;Charlie&quot;</span>, <span class="hljs-number">20</span>));<br><br>        <span class="hljs-comment">// 使用 Collections 排序 ArrayList</span><br>        Collections.sort(people, (person1, person2) -&gt; Integer.compare(person2.getAge(),person1.getAge()));<br><br>        <span class="hljs-comment">// 输出排序后的结果</span><br>        <span class="hljs-keyword">for</span> (Person person : people) &#123;<br>            System.out.println(person.getName() + <span class="hljs-string">&quot; - &quot;</span> + person.getAge());<br>        &#125;<br>        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> Collections.binarySearch(people,<span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>(<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-number">20</span>),(p1,p2)-&gt;  Integer.compare(p2.getAge(),p1.getAge()));<br>        System.out.println(index);<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br><br>    Person(String name,<span class="hljs-type">int</span> age)&#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>        <span class="hljs-built_in">this</span>.age = age;<br>    &#125;<br><br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getName</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> name;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setName</span><span class="hljs-params">(String name)</span> &#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getAge</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> age;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setAge</span><span class="hljs-params">(<span class="hljs-type">int</span> age)</span> &#123;<br>        <span class="hljs-built_in">this</span>.age = age;<br>    &#125;<br><br>&#125;<br><br><br><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="字符转换int"><a href="#字符转换int" class="headerlink" title="字符转换int"></a>字符转换int</h3><h3 id="12-整数转罗马数字"><a href="#12-整数转罗马数字" class="headerlink" title="12. 整数转罗马数字"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/integer-to-roman/">12. 整数转罗马数字</a></h3><p>心得：力扣无法使用正则表达式的东西，所以我再IDE写了，之后就开始看答案了。这是不对的，我应该挣扎一下，思考其他思路。</p>
+<p>最后写法：</p>
+<ol>
+<li>正则表达式</li>
+<li>关键点存储，每次判断num大于关键点就加一个数字</li>
+<li>纯纯每个十位都写上所有情况，一共写三十个位的二维数组记录。</li>
+</ol>
+<h2 id="第四天的练习"><a href="#第四天的练习" class="headerlink" title="第四天的练习"></a>第四天的练习</h2><h3 id="58-最后一个单词的长度"><a href="#58-最后一个单词的长度" class="headerlink" title="58. 最后一个单词的长度"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/length-of-last-word/">58. 最后一个单词的长度</a></h3><p>简单的字符串处理</p>
+<h3 id="14-最长公共前缀"><a href="#14-最长公共前缀" class="headerlink" title="14. 最长公共前缀"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-common-prefix/">14. 最长公共前缀</a></h3><p>简单的字符串处理</p>
+<h3 id="151-反转字符串中的单词"><a href="#151-反转字符串中的单词" class="headerlink" title="151. 反转字符串中的单词"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/reverse-words-in-a-string/">151. 反转字符串中的单词</a></h3><p>简单的字符串处理。</p>
+<h2 id="第五天的练习"><a href="#第五天的练习" class="headerlink" title="第五天的练习"></a>第五天的练习</h2><p>今天没有练习，晚上学习一下多线程。</p>
+<p>最终还是没有学习，晚上打农去了</p>
+<h2 id="第六天的练习"><a href="#第六天的练习" class="headerlink" title="第六天的练习"></a>第六天的练习</h2><p>​	kmp算法，如何理解next呢？</p>
+<p>​	aabaabaaf中匹配aabaaf。当在第二个b不匹配的时候，</p>
+<ol>
+<li>证明aabaa是匹配的，那么aabaa不行，就只能尽可能找最长的和后缀相同的前缀位置。</li>
+<li>aa是next能找到的最多的匹配位置。</li>
+<li>那么为什么能找到aa呢？因为aabaaf中，f寄了，aabaa相同，但是不能用，但可以说明aa可以找到。</li>
+</ol>
+<p>二如何求得next数组。next数组的意思是例如aabaaf。</p>
+<ol>
+<li>如果长度为1，前后缀匹配最长0</li>
+<li>为2，~1</li>
+<li>为3，~0</li>
+<li>为4，1</li>
+<li>为5，2</li>
+<li>为6，0；</li>
+<li>故数组为0，1，0，1，2，0；</li>
+</ol>
+<p>编码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getNext</span><span class="hljs-params">(<span class="hljs-type">int</span> []next , String s)</span>&#123;<br>       <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; <span class="hljs-comment">//前缀末尾下表</span><br>       next[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;<br>           <br>       <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span> ; i &lt; s.length() ; i++)&#123;<br>           <span class="hljs-keyword">while</span>(j &gt; <span class="hljs-number">0</span> &amp;&amp; s.charAt(i) != s.charAt(j))&#123;<br>               j = next[j - <span class="hljs-number">1</span>];<br>           &#125;<br>           <span class="hljs-keyword">if</span>(s.charAt(i) == s.charAt(j))&#123;<br>               j++;<br>           &#125;<br>           next[i] = j;	<br>       &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="第七天的练习"><a href="#第七天的练习" class="headerlink" title="第七天的练习"></a>第七天的练习</h2><h3 id="68-文本左右对齐"><a href="#68-文本左右对齐" class="headerlink" title="68. 文本左右对齐"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/text-justification/">68. 文本左右对齐</a></h3><p>stringBuffer 的add ，append ，length，insert。</p>
+<p>list的add ，append ，length，insert</p>
+<p>list没有append，没有insert，集成到add里了</p>
+<p>sb没有add</p>
+<p>string[]的长度没有括号<br>啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊，把我写的要死要活。</p>
+<p>我分的情况是下一个单词不要要换行，刚刚好长度，要换行。<br>我的想法：</p>
+<ol>
+<li>不要换行，那就加单词空格，直到换行</li>
+<li>刚刚好，那就直接上到res</li>
+<li>要换行，那就品鉴一下是否加空格（？？）坑定要加啊</li>
+</ol>
+<p>加单词空格我也有问题：</p>
+<ol>
+<li>直接就除余，不整除就多一个空格。（真的大聪明）。</li>
+</ol>
+<p>然后我美美开始写。</p>
+<p>得到一大坨垃圾代码，出现的问题有，临时变量生命周期管理不明确马，导致初始化问题。<strong>临时变量尽量生命周期尽量短</strong></p>
+<p>想法出错：<strong>结束条件不明确。</strong>不换行的时候会结束，刚刚好会结束，要换行的时候会结束。导致代码极度混乱。各种if - else</p>
+<h3 id="125-验证回文串"><a href="#125-验证回文串" class="headerlink" title="125. 验证回文串"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/valid-palindrome/">125. 验证回文串</a></h3><p>askI码和字符的关系，字符串大小写</p>
+<h2 id="2023-x2F-7-x2F-13"><a href="#2023-x2F-7-x2F-13" class="headerlink" title="2023&#x2F;7&#x2F;13"></a>2023&#x2F;7&#x2F;13</h2><h3 id="字符串的替换和正则表达式"><a href="#字符串的替换和正则表达式" class="headerlink" title="字符串的替换和正则表达式"></a>字符串的替换和正则表达式</h3><h2 id="2023-x2F-7-x2F-14"><a href="#2023-x2F-7-x2F-14" class="headerlink" title="2023&#x2F;7&#x2F;14"></a>2023&#x2F;7&#x2F;14</h2><h3 id="双端队列和单调队列"><a href="#双端队列和单调队列" class="headerlink" title="双端队列和单调队列"></a>双端队列和单调队列</h3><h2 id="2023-x2F-7-x2F-18"><a href="#2023-x2F-7-x2F-18" class="headerlink" title="2023&#x2F;7&#x2F;18"></a>2023&#x2F;7&#x2F;18</h2><p>一连好几天没写日记沉淀。首先最重要的还是吧生活过好，才能好好学习。我的短视频和游戏瘾太重了。</p>
+<h3 id="剑指-Offer-31-栈的压入、弹出序列"><a href="#剑指-Offer-31-栈的压入、弹出序列" class="headerlink" title="剑指 Offer 31. 栈的压入、弹出序列"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/">剑指 Offer 31. 栈的压入、弹出序列</a></h3><p>计数器思想，而不是按照顺序</p>
+<p>自己写的代码：&#x2F;&#x2F;栈为空的时候，指针边界，循环最好从成功or失败打头。</p>
+<p>当你发现你需要修改你for循环的长度的时候，不妨使用i–，因为终止条件是0，而初始化后i不变	</p>
+<h2 id="2023-x2F-7-x2F-19"><a href="#2023-x2F-7-x2F-19" class="headerlink" title="2023&#x2F;7&#x2F;19"></a>2023&#x2F;7&#x2F;19</h2><h3 id="剑指-Offer-24-反转链表"><a href="#剑指-Offer-24-反转链表" class="headerlink" title="剑指 Offer 24. 反转链表"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/fan-zhuan-lian-biao-lcof/">剑指 Offer 24. 反转链表</a></h3><p><strong>心得</strong>：这道题我没写出来，记得及时复习。三个节点怎么动的？循环的指针为什么取中间那个？</p>
+<h3 id="剑指-Offer-35-复杂链表的复制"><a href="#剑指-Offer-35-复杂链表的复制" class="headerlink" title="剑指 Offer 35. 复杂链表的复制"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/fu-za-lian-biao-de-fu-zhi-lcof/">剑指 Offer 35. 复杂链表的复制</a></h3><p><strong>心得：</strong>这道题自己的思路有问题，看了大佬的思路才抄出来的。使用了map存储。也使用map的key作为索引，不是很明白这道题考察了什么。大概是逻辑推理能力把。</p>
+<h3 id="剑指-Offer-18-删除链表的节点"><a href="#剑指-Offer-18-删除链表的节点" class="headerlink" title="剑指 Offer 18. 删除链表的节点"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shan-chu-lian-biao-de-jie-dian-lcof/">剑指 Offer 18. 删除链表的节点</a></h3><p><strong>心得：</strong>一道很简单的题目，写的很心酸（虽然是几天之前的我写的），主要的点1.没有考虑删除第一个节点的情况，2.考虑之后返回head导致错误。</p>
+<h3 id="剑指-Offer-59-I-滑动窗口的最大值"><a href="#剑指-Offer-59-I-滑动窗口的最大值" class="headerlink" title="剑指 Offer 59 - I. 滑动窗口的最大值"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/">剑指 Offer 59 - I. 滑动窗口的最大值</a></h3><p><strong>心得：</strong>第一道困难题，单调队列，了解原理之后其实不难，但是其中步骤也繁多，对<strong>下标</strong>不敏感，对<strong>先后顺序</strong>思考混乱，先删除后添加还是反之，<strong>res的添加时机</strong>等等，输出和预期结果不一致时的debug能力。</p>
+<h3 id="剑指-Offer-59-II-队列的最大值"><a href="#剑指-Offer-59-II-队列的最大值" class="headerlink" title="剑指 Offer 59 - II. 队列的最大值"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/dui-lie-de-zui-da-zhi-lcof/">剑指 Offer 59 - II. 队列的最大值</a></h3><p><strong>心得：</strong>循环条件导致，pop到空的时候我写的逻辑里面，空不了。这道题还有一个逆天的点位，完全等价的两个代码块会导致答案的不对，晚点一定要来解决。</p>
+<h3 id="剑指-Offer-29-顺时针打印矩阵"><a href="#剑指-Offer-29-顺时针打印矩阵" class="headerlink" title="剑指 Offer 29. 顺时针打印矩阵"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/">剑指 Offer 29. 顺时针打印矩阵</a></h3><p><strong>心得：</strong>使用蛮力法逆天而为，虽然idea过了，但是力扣没给过，最适合的方法是边界缩小法。</p>
+<h3 id="剑指-Offer-31-栈的压入、弹出序列-1"><a href="#剑指-Offer-31-栈的压入、弹出序列-1" class="headerlink" title="剑指 Offer 31. 栈的压入、弹出序列"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/zhan-de-ya-ru-dan-chu-xu-lie-lcof/">剑指 Offer 31. 栈的压入、弹出序列</a></h3><p><strong>心得：</strong>使用指针模拟了栈的行为，写的很丑陋，是匹配，然后遍历弹出，然后弹出的各种情况，ifelse。。。大佬的思路就好的多，一次压一个，然后第二个数组匹配，能弹多少弹多少。最后计数，看看弹出的数量是否刚好。<strong>计数</strong>是一个很好的思路，不一定要判断空，要原来的数组怎么样。</p>
+<h3 id="剑指-Offer-32-II-从上到下打印二叉树-II"><a href="#剑指-Offer-32-II-从上到下打印二叉树-II" class="headerlink" title="剑指 Offer 32 - II. 从上到下打印二叉树 II"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/">剑指 Offer 32 - II. 从上到下打印二叉树 II</a></h3><p><strong>心得：</strong>自此进入二叉树，递归，dfs，bfs，回溯的世界！这道题的思想也是<strong>计数</strong>。当然可以往queue塞标记，但是哪里有计数方便呢。</p>
+<h3 id="剑指-Offer-26-树的子结构"><a href="#剑指-Offer-26-树的子结构" class="headerlink" title="剑指 Offer 26. 树的子结构"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/">剑指 Offer 26. 树的子结构</a></h3><p><strong>心得：</strong>进入二叉树的世界，记住，有的<strong>递归就递归</strong>，别惦记你那普通方法，多记几个常规的递归。熟练写非递归方案的遍历。</p>
+<p>今天一下子写的有些多，明天再总结，今天还有很多东西要搞</p>
+<h3 id="剑指-Offer-12-矩阵中的路径-剑指-Offer-34-二叉树中和为某一值的路径"><a href="#剑指-Offer-12-矩阵中的路径-剑指-Offer-34-二叉树中和为某一值的路径" class="headerlink" title="剑指 Offer 12. 矩阵中的路径 + 剑指 Offer 34. 二叉树中和为某一值的路径"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/ju-zhen-zhong-de-lu-jing-lcof/">剑指 Offer 12. 矩阵中的路径</a> + <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/er-cha-shu-zhong-he-wei-mou-yi-zhi-de-lu-jing-lcof/">剑指 Offer 34. 二叉树中和为某一值的路径</a></h3><p><strong>心得：dfs+递归+回溯</strong>，dfs的写法，一般先不考虑回溯的问题，只管按照1.退出条件。2确认条件。3.递归继续找。写完之后，要记得加入回溯。则得到套路</p>
+<ol>
+<li>退出条件</li>
+<li>确认条件</li>
+<li>标记</li>
+<li>递归继续找</li>
+<li>删除标记</li>
+</ol>
+<h3 id="剑指-Offer-55-II-平衡二叉树"><a href="#剑指-Offer-55-II-平衡二叉树" class="headerlink" title="剑指 Offer 55 - II. 平衡二叉树"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/ping-heng-er-cha-shu-lcof/">剑指 Offer 55 - II. 平衡二叉树</a></h3><p><strong>心得：</strong>当你手上武器有限的时候，要使用有限的武器来打倒题目。只有最大深度的方法，但是可以递归所有根来判断是否所有根都满足最大深度差不大于1.</p>
+<h3 id="剑指-Offer-68-II-二叉树的最近公共祖先"><a href="#剑指-Offer-68-II-二叉树的最近公共祖先" class="headerlink" title="剑指 Offer 68 - II. 二叉树的最近公共祖先"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/er-cha-shu-de-zui-jin-gong-gong-zu-xian-lcof/">剑指 Offer 68 - II. 二叉树的最近公共祖先</a></h3><p><strong>心得</strong>：这道题蛮难，满<strong>新颖</strong>。<strong>递归+回溯</strong>的<strong>经典</strong>很难。同时出现递归的时候，解读他不仅仅是递归名字的意义，通过这道题，给我全新的解读和理解递归的角度。这道题，<strong>递归解读为上一个递归回溯回来的节点信息。</strong></p>
+<h2 id="树的常见递归"><a href="#树的常见递归" class="headerlink" title="树的常见递归"></a>树的常见递归</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//以某根开始的树的子结构</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">sameTree</span><span class="hljs-params">(TreeNode A,TreeNode B)</span>&#123;<br>        <span class="hljs-keyword">if</span>(B == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">if</span>(A == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>        <span class="hljs-keyword">return</span> A.val == B.val &amp;&amp; sameTree(A.left,B.left) &amp;&amp; sameTree(A.right,B.right);<br>    &#125;<br><br><span class="hljs-comment">//完全相同的树</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">sameTree</span><span class="hljs-params">(TreeNode A,TreeNode B)</span>&#123;<br>        <span class="hljs-keyword">if</span>(A == <span class="hljs-literal">null</span> &amp;&amp; B == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">if</span>(A == <span class="hljs-literal">null</span> || B == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">if</span>(A.val != B.val) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>        <span class="hljs-keyword">return</span> sameTree(A.left,B.right) &amp;&amp; sameTree(A.right,B.left);<br>    &#125;<br><br><span class="hljs-comment">//树的先序遍历</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">perOrder</span><span class="hljs-params">(TreeNode root)</span>&#123;<br>    <span class="hljs-keyword">if</span>(root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;<br>    <br>    System.out.println(root.val());<br>    perOrder(root.left);<br>    perOrder(root.rigth);<br>&#125;<br><br><span class="hljs-comment">//树的非递归先序遍历</span><br><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">perOrder</span><span class="hljs-params">(TreeNode root)</span>&#123;<br>   <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;<br><br>    Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();<br>    stack.push(root);<br><br>    <span class="hljs-keyword">while</span> (!stack.isEmpty()) &#123;<br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> stack.pop();<br>        System.out.print(node.val + <span class="hljs-string">&quot; &quot;</span>);<br><br>        <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) stack.push(node.right);<br>        <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>) stack.push(node.left);<br>    &#125;   <br>&#125;<br><br><span class="hljs-comment">//中序</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">nonRecursiveInorderTraversal</span><span class="hljs-params">(TreeNode root)</span> &#123;<br>    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;<br><br>    Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();<br>    <span class="hljs-type">TreeNode</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> root;<br><br>    <span class="hljs-keyword">while</span> (curr != <span class="hljs-literal">null</span> || !stack.isEmpty()) &#123;<br>        <span class="hljs-keyword">while</span> (curr != <span class="hljs-literal">null</span>) &#123;<br>            stack.push(curr);<br>            curr = curr.left;<br>        &#125;<br><br>        curr = stack.pop();<br>        System.out.print(curr.val + <span class="hljs-string">&quot; &quot;</span>);<br><br>        curr = curr.right;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">//后序</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">nonRecursivePostorderTraversal</span><span class="hljs-params">(TreeNode root)</span> &#123;<br>    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();<br>    stack.push(root);<br>    Stack&lt;TreeNode&gt; output = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();<br><br>    <span class="hljs-keyword">while</span> (!stack.isEmpty()) &#123;<br>        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> stack.pop();<br>        output.push(current);<br><br>        <span class="hljs-keyword">if</span> (current.left != <span class="hljs-literal">null</span>) &#123;<br>            stack.push(current.left);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (current.right != <span class="hljs-literal">null</span>) &#123;<br>            stack.push(current.right);<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">while</span> (!output.isEmpty()) &#123;<br>        System.out.print(output.pop().val + <span class="hljs-string">&quot; &quot;</span>);<br>    &#125;<br>&#125;<br><span class="hljs-comment">//二叉树的深度</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxDepth</span><span class="hljs-params">(TreeNode root)</span> &#123;<br>    <span class="hljs-keyword">return</span> root == <span class="hljs-literal">null</span> ? <span class="hljs-number">0</span> : Math.max( maxDepth(root.left) + <span class="hljs-number">1</span>,maxDepth(root.right) + <span class="hljs-number">1</span>); <br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="常用工具类和常用方法"><a href="#常用工具类和常用方法" class="headerlink" title="常用工具类和常用方法"></a>常用工具类和常用方法</h2><h3 id="String-StringBuffer"><a href="#String-StringBuffer" class="headerlink" title="String StringBuffer"></a>String StringBuffer</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs java">StringBuffer的：<br>append(String str): 在字符串的末尾追加指定的字符串。<br>insert(<span class="hljs-type">int</span> offset, String str): 在指定的偏移量处插入指定的字符串。<br>replace(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end, String str): 使用指定的字符串替换从起始位置到结束位置之间的字符。<br>delete(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end): 删除从起始位置到结束位置之间的字符。<br>length(): 返回字符串的长度。<br>substring(<span class="hljs-type">int</span> start): 返回从指定位置开始到字符串末尾的子字符串。<br>substring(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end): 返回从起始位置到结束位置之间的子字符串。<br>reverse(): 反转字符串。<br>toString(): 将StringBuffer对象转换为普通字符串。<br><br>string<br><span class="hljs-title function_">length</span><span class="hljs-params">()</span>: 返回字符串的长度。<br>charAt(<span class="hljs-type">int</span> index): 返回指定索引位置处的字符。<br>substring(<span class="hljs-type">int</span> beginIndex): 返回从指定索引开始到末尾的子字符串。<br>substring(<span class="hljs-type">int</span> beginIndex, <span class="hljs-type">int</span> endIndex): 返回从起始索引到结束索引之间的子字符串。<br>concat(String str): 将指定的字符串连接到原始字符串的末尾。<br>toUpperCase(): 将字符串转换为大写形式。<br>toLowerCase(): 将字符串转换为小写形式。<br>trim(): 去除字符串两端的空格。<br>startsWith(String prefix): 判断字符串是否以指定的前缀开始。<br>endsWith(String suffix): 判断字符串是否以指定的后缀结束。<br>contains(CharSequence sequence): 判断字符串是否包含指定的字符序列。<br>indexOf(<span class="hljs-type">int</span> ch): 返回指定字符第一次出现的索引。<br>lastIndexOf(<span class="hljs-type">int</span> ch): 返回指定字符最后一次出现的索引。<br>equals(Object obj): 比较字符串是否相等。<br>equalsIgnoreCase(String anotherString): 忽略大小写比较字符串是否相等。<br>replace(<span class="hljs-type">char</span> oldChar, <span class="hljs-type">char</span> newChar): 将字符替换成新字符。<br>replaceAll(String regex, String replacement): 使用正则表达式替换字符串。<br>split(String regex): 使用正则表达式将字符串拆分成字符串数组。<br>join(CharSequence delimiter, CharSequence... elements): 使用指定的分隔符将一组字符串连接成一个字符串。<br>startsWith(String prefix, <span class="hljs-type">int</span> toffset): 判断字符串从指定偏移量开始是否以指定的前缀开始。<br><br>正则表达式<br><span class="hljs-type">String</span> <span class="hljs-variable">regex</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$&quot;</span>;<br>        <span class="hljs-keyword">return</span> Pattern.matches(regex, input);<br>        <br>        <span class="hljs-keyword">import</span> java.util.regex.Matcher;<br><span class="hljs-keyword">import</span> java.util.regex.Pattern;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">replaceSecondOccurrence</span><span class="hljs-params">(String input)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">regex</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;(.*?ijiji.*?)ijiji&quot;</span>;<br>        <span class="hljs-type">Pattern</span> <span class="hljs-variable">pattern</span> <span class="hljs-operator">=</span> Pattern.compile(regex);<br>        <span class="hljs-type">Matcher</span> <span class="hljs-variable">matcher</span> <span class="hljs-operator">=</span> pattern.matcher(input);<br>        <span class="hljs-type">int</span> <span class="hljs-variable">occurrenceCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-type">StringBuffer</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuffer</span>();<br>        <br>        <span class="hljs-keyword">while</span> (matcher.find()) &#123;<br>            occurrenceCount++;<br>            <span class="hljs-keyword">if</span> (occurrenceCount == <span class="hljs-number">2</span>) &#123;<br>                matcher.appendReplacement(sb, <span class="hljs-string">&quot;@&quot;</span>);<br>            &#125;<br>        &#125;<br>        <br>        matcher.appendTail(sb);<br>        <span class="hljs-keyword">return</span> sb.toString();<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">text</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;This is a test ijiji string ijiji with multiple ijiji occurrences.&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">replacedText</span> <span class="hljs-operator">=</span> replaceSecondOccurrence(text);<br>        System.out.println(<span class="hljs-string">&quot;Replaced Text: &quot;</span> + replacedText);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="Arrays-collections-ArrayList"><a href="#Arrays-collections-ArrayList" class="headerlink" title="Arrays collections ArrayList"></a>Arrays collections ArrayList</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java">Arrays 类：提供了对数组进行排序、搜索、比较等操作的静态方法。<br>sort(<span class="hljs-type">int</span>[] array)：对 <span class="hljs-type">int</span> 数组进行升序排序。<br>binarySearch(<span class="hljs-type">int</span>[] array, <span class="hljs-type">int</span> key)：在已排序的 <span class="hljs-type">int</span> 数组中使用二分查找算法搜索指定值。<br>equals(<span class="hljs-type">int</span>[] array1, <span class="hljs-type">int</span>[] array2)：比较两个 <span class="hljs-type">int</span> 数组是否相等。<br>toString(<span class="hljs-type">int</span>[] array1)<br>asList(<span class="hljs-type">int</span>[] array)   得到的list不可变<br><span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(array));  得到可变list<br><br>ArrayList类：<br>转化为数组：<br><span class="hljs-number">1.</span> Integer[] temp1 = list.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[<span class="hljs-number">0</span>]);<span class="hljs-comment">//基本没什么软用因为返回值是int[]不吃Integer[];</span><br><span class="hljs-number">2.</span> <span class="hljs-type">int</span>[] temp = list.stream().mapToInt(Integer::intValue).toArray();<br><span class="hljs-number">3.</span> contains()<br><span class="hljs-number">4.</span> add() , get() , set(), remove() , size() , isEmpty().<br><br>Collections类：<br><span class="hljs-number">1.</span> sort(List&lt;T&gt; list)<br><span class="hljs-number">2.</span> binarySearch(List&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Comparable</span>&lt;? <span class="hljs-built_in">super</span> T&gt;&gt; list, T key) 不会排序，直接二分法查找<br><span class="hljs-number">3.</span> Collections.reverse(ArrayList);<br><br>System.arraycopy()方法有以下参数：<br>src：源数组，即需要复制元素的数组。<br>srcPos：源数组的起始位置，指定从源数组的哪个索引位置开始复制元素。<br>dest：目标数组<br>destPos：目标数组的起始位置，指定从目标数组的哪个索引位置开始粘贴元素。<br>length：要复制的元素数量，表示从源数组复制的元素个数。<br><br>数组（Array）：可以通过 array.length 来获取数组的长度。<br>字符串（String）：可以使用 .length() 方法来获取字符串的长度，例如 str.length()。<br>列表（List）：可以使用 .size() 方法来获取列表的长度，例如 list.size()。<br>映射（Map）：可以使用 .size() 方法来获取映射中键值对的数量，例如 map.size()。<br>集合（Set）：可以使用 .size() 方法来获取集合中元素的数量，例如 set.size()。<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="HashMap-HashSet-Stack-LinkedList"><a href="#HashMap-HashSet-Stack-LinkedList" class="headerlink" title="HashMap HashSet Stack LinkedList"></a>HashMap HashSet Stack LinkedList</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">////////////////////HashMap/////////////////////</span><br>put(key, value): 将指定的键值对存储到 HashMap 中。<br>get(key): 根据键获取对应的值。<br>remove(key): 根据键从 HashMap 中移除对应的键值对。<br>containsKey(key): 判断 HashMap 中是否包含指定的键。<br>containsValue(value): 判断 HashMap 中是否包含指定的值。<br>size(): 返回 HashMap 中键值对的数量。<br>isEmpty(): 判断 HashMap 是否为空。<br>clear(): 清空 HashMap 中的所有键值对。<br>keySet(): 返回 HashMap 中所有键的集合。<br>values(): 返回 HashMap 中所有值的集合。<br>entrySet(): 返回 HashMap 中所有键值对的集合（Entry 对象）。<br>putAll(map): 将另一个 Map 中的所有键值对存储到当前 HashMap 中。<br><br><span class="hljs-comment">////////////////////////HashSet/////////////////////////</span><br>add(element): 将指定的元素添加到 HashSet 中。<br>remove(element): 从 HashSet 中移除指定的元素。<br>contains(element): 判断 HashSet 是否包含指定的元素。<br>isEmpty(): 判断 HashSet 是否为空。<br>size(): 返回 HashSet 中元素的数量。<br>clear(): 清空 HashSet 中的所有元素。<br>iterator(): 返回一个迭代器，用于遍历 HashSet 中的元素。<br>addAll(collection): 将另一个集合中的所有元素添加到当前 HashSet 中。<br>retainAll(collection): 保留当前 HashSet 中与另一个集合中共有的元素，移除其他元素。<br>removeAll(collection): 移除当前 HashSet 中与另一个集合中相同的所有元素。<br>containsAll(collection): 判断当前 HashSet 是否包含另一个集合中的所有元素。<br>toArray(): 将 HashSet 中的元素转换为数组。<br><br><span class="hljs-comment">//////////////LinkedList/////////////////////</span><br>LinkedList 是 Java 中常用的双向链表实现，它可以用来实现队列和栈的功能。除了队列和栈的方法外，LinkedList 还有其他常用的方法。下面是其中一些常用方法的说明：<br>队列方法（Queue methods）：<br>offer(element): 将指定的元素添加到队尾。<br>poll(): 获取并移除队头元素。<br>peek(): 获取队头元素但不移除。<br>栈方法（Stack methods）：<br>push(element): 将指定的元素推入栈顶。<br>pop(): 弹出栈顶元素。<br>peek(): 获取栈顶元素但不弹出。<br>其他常用方法：<br>add(element): 将指定的元素添加到链表末尾。<br>remove(element): 移除第一个匹配给定元素的节点。 如果linkedlist&lt;Integer&gt;那么是下标位置。<br>get(index): 获取指定位置的元素。<br>set(index, element): 替换指定位置的元素。<br>size(): 返回链表中的元素数量。<br>isEmpty(): 判断链表是否为空。<br>clear(): 清空链表中的所有元素。<br>contains(element): 判断链表是否包含指定的元素。<br>iterator(): 返回一个迭代器，用于遍历链表中的元素。<br><br><span class="hljs-comment">//////////////////////Stack////////////</span><br>push(element): 将元素推入栈顶。<br>pop(): 弹出栈顶元素并将其从栈中移除。<br>peek(): 获取栈顶元素但不将其移除。<br>empty(): 判断栈是否为空。<br>search(element): 查找指定元素在栈中的位置，返回与栈顶的距离（如果不存在，则返回 -<span class="hljs-number">1</span>）。<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="Deque"><a href="#Deque" class="headerlink" title="Deque"></a>Deque</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java">Java中的Deque（双端队列）实现了Queue和Deque接口，提供了一系列常用的方法来操作队列的两端。以下是Deque常用的方法：<br><br><span class="hljs-number">1.</span> `<span class="hljs-keyword">void</span> <span class="hljs-title function_">addFirst</span><span class="hljs-params">(E e)</span>`：将元素插入到Deque的开头。<br><span class="hljs-number">2.</span> `<span class="hljs-keyword">void</span> <span class="hljs-title function_">addLast</span><span class="hljs-params">(E e)</span>`：将元素插入到Deque的末尾。<br><span class="hljs-number">3.</span> `<span class="hljs-type">boolean</span> <span class="hljs-title function_">offerFirst</span><span class="hljs-params">(E e)</span>`：将元素插入到Deque的开头，如果插入成功则返回<span class="hljs-literal">true</span>，否则返回<span class="hljs-literal">false</span>。<br><span class="hljs-number">4.</span> `<span class="hljs-type">boolean</span> <span class="hljs-title function_">offerLast</span><span class="hljs-params">(E e)</span>`：将元素插入到Deque的末尾，如果插入成功则返回<span class="hljs-literal">true</span>，否则返回<span class="hljs-literal">false</span>。<br><span class="hljs-number">5.</span> `E <span class="hljs-title function_">removeFirst</span><span class="hljs-params">()</span>`：移除并返回Deque的第一个元素，如果Deque为空则抛出NoSuchElementException异常。<br><span class="hljs-number">6.</span> `E <span class="hljs-title function_">removeLast</span><span class="hljs-params">()</span>`：移除并返回Deque的最后一个元素，如果Deque为空则抛出NoSuchElementException异常。<br><span class="hljs-number">7.</span> `E <span class="hljs-title function_">pollFirst</span><span class="hljs-params">()</span>`：移除并返回Deque的第一个元素，如果Deque为空则返回<span class="hljs-literal">null</span>。<br><span class="hljs-number">8.</span> `E <span class="hljs-title function_">pollLast</span><span class="hljs-params">()</span>`：移除并返回Deque的最后一个元素，如果Deque为空则返回<span class="hljs-literal">null</span>。<br><span class="hljs-number">9.</span> `E <span class="hljs-title function_">getFirst</span><span class="hljs-params">()</span>`：获取Deque的第一个元素，但不移除该元素，如果Deque为空则抛出NoSuchElementException异常。<br><span class="hljs-number">10.</span> `E <span class="hljs-title function_">getLast</span><span class="hljs-params">()</span>`：获取Deque的最后一个元素，但不移除该元素，如果Deque为空则抛出NoSuchElementException异常。<br><span class="hljs-number">11.</span> `E <span class="hljs-title function_">peekFirst</span><span class="hljs-params">()</span>`：获取Deque的第一个元素，但不移除该元素，如果Deque为空则返回<span class="hljs-literal">null</span>。<br><span class="hljs-number">12.</span> `E <span class="hljs-title function_">peekLast</span><span class="hljs-params">()</span>`：获取Deque的最后一个元素，但不移除该元素，如果Deque为空则返回<span class="hljs-literal">null</span>。<br><span class="hljs-number">13.</span> `<span class="hljs-type">boolean</span> <span class="hljs-title function_">removeFirstOccurrence</span><span class="hljs-params">(Object o)</span>`：从Deque中移除第一次出现的指定元素。<br><span class="hljs-number">14.</span> `<span class="hljs-type">boolean</span> <span class="hljs-title function_">removeLastOccurrence</span><span class="hljs-params">(Object o)</span>`：从Deque中移除最后一次出现的指定元素。<br><span class="hljs-number">15.</span> `<span class="hljs-type">boolean</span> <span class="hljs-title function_">contains</span><span class="hljs-params">(Object o)</span>`：判断Deque是否包含指定元素。<br><span class="hljs-number">16.</span> `<span class="hljs-type">int</span> <span class="hljs-title function_">size</span><span class="hljs-params">()</span>`：返回Deque中的元素数量。<br><br>以上是Deque的一些常用方法，可以通过调用这些方法来操作双端队列。<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h3 id="基础类型相互转化Integer-String-character-double-float-判断是否为数字等。"><a href="#基础类型相互转化Integer-String-character-double-float-判断是否为数字等。" class="headerlink" title="基础类型相互转化Integer,String ,character,double,float.判断是否为数字等。"></a>基础类型相互转化Integer,String ,character,double,float.判断是否为数字等。</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java">Integer-&gt;String <span class="hljs-title function_">toString</span><span class="hljs-params">()</span><br>String-&gt;Integer Integer.parseInt(str)<br><br>Integer-&gt;Double num.intValue();<br>Double-&gt;Integer Double.valueOf(d).intValue();<br><br>Character.isDigit(<span class="hljs-type">char</span>)<br>(ch &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; ch &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) || (ch &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; ch &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><ol>
+<li>dp数组，以及下表的含义</li>
+<li>递推公式</li>
+<li>dp数组的初始化</li>
+<li>遍历顺序</li>
+<li>打印dp数组</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>算法的思考</div>
+      <div>http://example.com/2023/08/10/算法的思考 (2)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>August 10, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/08/10/spring%E5%B9%B6%E5%8F%91%E9%97%AE%E9%A2%98/" title="spring的并发问题">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">spring的并发问题</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/10/%E9%80%9A%E8%BF%87%E9%97%AE%E9%A2%98%E6%9D%A5%E7%90%86%E8%A7%A3%E5%A4%9A%E7%BA%BF%E7%A8%8B%20(2)/" title="通过问题来理解多线程">
+                        <span class="hidden-mobile">通过问题来理解多线程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
